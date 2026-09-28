@@ -73,7 +73,7 @@
       ["#/guide", "안내사항", "현장 운영 가이드 (Notion)"],
       ["#/schedule", "CONNECT 전체일정", "10.8–10.9 추천 세션 · Pitchstop"],
       ["#/companies", "기업 브로슈어", `참여 스타트업 ${CO.length}개사`],
-      ["#/shbc", "SHBC 일정", "Singapore Health & Biomedical Congress"],
+      ["#/shbc", "SHBC 전체일정", "Singapore Health & Biomedical Congress"],
       ["#/contact", "운영사 연락", "WhatsApp · 카카오톡 · 전화"],
       ["#/my", "스타트업 정보 (로그인)", "미팅현황 · 사진 · 홍보페이지"],
     ];
@@ -195,26 +195,93 @@
     return `<a class="linkcard" href="${href}" target="_blank" rel="noopener"><strong>${title}</strong><span>${desc}</span><em>${cta}</em></a>`;
   }
 
+  function checks(items) {
+    return `<ul class="checks">${items.map(([t, d]) => `<li><strong>${t}</strong><p>${d}</p></li>`).join("")}</ul>`;
+  }
+
   function viewGuide() {
     return `
-      <section class="wrap page">
-        <h1 class="page-title">안내사항</h1>
-        <p class="lede">현장 운영 가이드, 준비물, 체크리스트는 Notion 페이지에서 계속 업데이트됩니다.</p>
-        ${linkCard(C.links.guide, "2026 SHBC Research & Innovation 안내", "Notion에서 최신 안내사항을 확인하세요. 변경 사항은 이 페이지에 먼저 반영됩니다.", "Notion에서 열기")}
-        <h2 class="sub">꼭 기억할 시간</h2>
-        <ul class="keytimes">
-          <li><b>10.8 07:30–09:00</b>Congress Pass 수령 · 부스 설치 · 현장 브리핑 (09:00까지 완료)</li>
-          <li><b>10.8 14:30–16:00</b>Pitchstop — 기업별 5분 발표 + 5분 Q&A</li>
-          <li><b>10.9 08:30–08:45</b>부스 준비상태 확인 (재설치 불필요)</li>
-          <li><b>10.9 17:00</b>스타트업 카운터 운영 종료</li>
-        </ul>
-      </section>`;
+      <article class="wrap page guide">
+        <h1 class="page-title">2026 싱가포르 헬스&바이오메디컬 컨퍼런스(SHBC) - Research & Innovation</h1>
+        <p class="g-en">Research & Innovation @ NHG Health Exhibition at the Singapore Health & Biomedical Congress (SHBC) 2026</p>
+        <p class="lede">Singapore Health & Biomedical Congress(SHBC) 2026 참가를 통해 싱가포르 대표 의료·바이오 컨퍼런스에서 글로벌 임상의, 연구기관 및 산업 관계자들과 교류하고, 국내 헬스케어 스타트업의 글로벌 사업화 및 임상 협력 기회를 확대합니다. Research & Innovation @ NHG Health Exhibition 내 스타트업 전시, 피칭 세션, NHG Health 임상의와의 1:1 미팅까지! SHBC 2026 프로그램을 한눈에 확인해 보세요. 🙌</p>
+
+        <section class="g-sec">
+          <h2>🎪 SHBC 소개</h2>
+          <p><strong>Singapore Health & Biomedical Congress (SHBC)</strong>는 <strong>NHG Health가 매년 개최하는 대표적인 헬스케어·바이오메디컬 컨퍼런스</strong>로, 의료·연구·산업 분야 전문가들이 한자리에 모여 최신 의료기술과 연구 성과를 공유하는 싱가포르의 대표적인 학술 및 산업 행사입니다.</p>
+          ${checks([
+            ["싱가포르 대표 헬스케어·바이오메디컬 컨퍼런스", "<strong>NHG Health</strong>의 연례 플래그십(Flagship) 행사로, 의료 혁신과 연구 성과를 공유하고 미래 의료 발전 방향을 논의하는 싱가포르의 대표적인 헬스케어·바이오메디컬 행사입니다."],
+            ["3,600명 이상의 국내외 의료·바이오 전문가 참여", "의료진, 과학자, 연구자, 병원 관리자, 커뮤니티 케어 기관, 산업계 전문가 및 학생 등 <strong>3,600명 이상의 국내외 참가자</strong>가 참석하여 최신 연구, 임상 사례 및 혁신 기술을 공유하고 협력 네트워크를 구축합니다."],
+            ["산학연 협력을 통한 의료 혁신 플랫폼", "헬스케어 산업과 연구기관, 의료기관을 연결하는 협력 플랫폼으로서 의료기술 혁신, 연구 협력, 오픈이노베이션 및 글로벌 파트너십을 촉진하며, 보다 건강하고 지속가능한 지역사회 구축을 목표로 합니다."],
+          ])}
+        </section>
+
+        <section class="g-sec">
+          <h2>🧬 NHG Health 소개</h2>
+          <p><strong>NHG Health</strong>는 싱가포르를 대표하는 공공 의료기관으로, <strong>예방 중심의 의료서비스와 환자 중심(Person-centred)의 헬스케어</strong>를 통해 국민의 건강한 삶을 지원하고 있습니다.</p>
+          ${checks([
+            ["예방 중심의 통합 헬스케어 제공", "우수한 임상 진료를 기반으로 예방의학, 건강증진, 맞춤형 의료서비스를 제공하며, 생애주기별 건강관리 프로그램을 통해 질병 치료를 넘어 지속 가능한 건강 증진을 실현하고 있습니다."],
+            ["의료 연구·교육 및 헬스케어 혁신 선도", "대학, 연구기관 및 산업계와 협력하여 의학교육, 임상연구, 디지털 헬스케어 및 의료기술 혁신을 추진하며, 싱가포르 의료산업의 발전과 국가 보건 과제 해결에 기여하고 있습니다."],
+            ["지역사회 기반 통합 건강관리 체계 운영", "싱가포르 <strong>중부(Central) 및 북부(North) 지역의 Regional Health Manager</strong>로서 지역 병·의원(General Practice), 보건기관 및 사회복지기관과 협력해 주민들의 <strong>신체적·정신적·사회적 건강</strong>을 통합적으로 관리하는 지역 기반 의료서비스를 운영하고 있습니다."],
+          ])}
+        </section>
+
+        <section class="g-sec">
+          <h2>🗓️ 프로그램 개요</h2>
+          <dl class="overview">
+            <div><dt>프로그램명</dt><dd>Singapore Health & Biomedical Congress (SHBC) 2026 - Research & Innovation</dd></div>
+            <div><dt>목적</dt><dd>SHBC 참가자들을 대상으로 스타트업의 역량 및 솔루션을 홍보할 수 있는 기회 제공</dd></div>
+            <div><dt>일정</dt><dd>2026년 10월 8일(목) ~ 10월 9일(금)</dd></div>
+            <div><dt>장소</dt><dd>Singapore Expo<br><a href="https://www.google.com/maps/search/?api=1&query=1+Expo+Dr+Singapore+486150" target="_blank" rel="noopener">📍 1 Expo Dr, Singapore 486150</a></dd></div>
+            <div><dt>참가 대상</dt><dd>헬스&바이오메디컬 스타트업 7개사</dd></div>
+          </dl>
+        </section>
+
+        <section class="g-sec">
+          <h2>🎁 프로그램 참여 혜택</h2>
+          <ul class="benefits">
+            <li><strong>Full Congress Pass 지원</strong><p>Full Congress Pass로 이틀 간 진행되는 모든 컨퍼런스 세션 참석 및 전시 구역 입장 가능<br>Tea Break 및 Lunch 제공</p></li>
+            <li><strong>스타트업 쇼케이스 전시 공간 제공</strong><p>Research and Innovation @ NHG Health 전시 구역 내 7개 스타트업 개별 공간 배정<br>카운터(약 높이 1m x 길이 1m x 폭 0.5m 상당, 전면 기업 로고 인쇄 포함, 1개) 및 풀업 배너, 전원 콘센트 제공</p></li>
+            <li><strong>스타트업 전용 투자 피칭 세션 운영</strong><p>Research and Innovation @ NHG Health 무대 내 약 1시간의 전용 프로그램 배정<br><span class="small">* 공용 무대를 사용하며, 전체 무대 일정 중 특정 세션을 전용으로 확보하는 방식</span><br>기업 당 발표 5분, Q&A 5분으로 총 10분 배정</p></li>
+            <li><strong>투자사 피드백 리포트 제공</strong><p>피칭 세션 종료 후 투자사 피드백 리포트(5-7건) 제공</p></li>
+            <li><strong>스타트업별 맞춤형 1:1 미팅 3회 지원</strong><p>핵심 밸류 프로포지션인 NHG Health 소속 관련 임상의(Clinician)들과의 큐레이션된 1:1 미팅 3회 보장<br><span class="small">* 행사 전/후 온라인 미팅으로 진행 예정이나, 임상의 일정이 가능한 경우 현장 대면 미팅 진행 가능</span></p></li>
+          </ul>
+        </section>
+
+        <section class="g-sec">
+          <h2>📍 방문 기업</h2>
+          <div class="visit">
+            <h3>Co11ab</h3>
+            <p><a href="https://www.google.com/maps/search/?api=1&query=11+Mandalay+Rd+Singapore+308232" target="_blank" rel="noopener">📍 11 Mandalay Rd, #16-01, Singapore 308232</a></p>
+            <h4>기관 소개</h4>
+            <p>NTU (난양공과대학), A*STAR (과학기술연구청), NHG (국립헬스케어그룹)가 공동 설립한 바이오메드테크 인큐베이터</p>
+            <ul>
+              <li><strong>싱가포르 최초</strong>로 헬스케어 구역 (HealthCity Novena)에 자리 잡은 <strong>스타트업 지원 허브</strong></li>
+              <li>연구와 상업화 간의 간극을 줄이고 <strong>혁신을 촉진</strong></li>
+              <li>병원, 연구기관, 산업계와의 <strong>오픈이노베이션 기반 공동연구 및 솔루션 상용화</strong> 추진</li>
+            </ul>
+            <h4>방문 내용</h4>
+            <ul>
+              <li>Co11ab 공간 투어</li>
+              <li>NHG (National Healthcare Group)의 <strong>싱가포르 헬스케어 시장 인사이트</strong> 브리핑</li>
+            </ul>
+            <h4>실증 예시</h4>
+            <ul>
+              <li><strong>AI 기반 환자 증상 예측 및 치료 의사결정 지원 시스템</strong> 개발</li>
+              <li>병원 내 <strong>데이터 연계형 맞춤형 치료 알고리즘</strong> 검증 및 임상 적용</li>
+              <li><strong>디지털 치료제 기반 건강관리 프로그램</strong> 공동 설계 및 배포</li>
+            </ul>
+          </div>
+        </section>
+
+        <p class="note">원문 및 사진: <a href="${C.links.guide}" target="_blank" rel="noopener">Notion 안내 페이지</a></p>
+      </article>`;
   }
 
   function viewSHBC() {
     return `
       <section class="wrap page">
-        <h1 class="page-title">SHBC 2026</h1>
+        <h1 class="page-title">SHBC 전체일정</h1>
         <p class="lede">Singapore Health & Biomedical Congress는 NHG Health의 연례 대표 헬스케어 컨퍼런스로, 23회째 매년 3,600명 이상이 참석합니다.</p>
         ${linkCard(C.links.shbc, "SHBC 공식 웹사이트", "세션, 연사, 전시 정보 전체", "shbc.com.sg 열기")}
         ${linkCard(C.links.shbcProgramme, "SHBC 전체 프로그램 & 시간표", "모든 트랙과 세션의 공식 일정", "프로그램 보기")}

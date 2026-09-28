@@ -225,3 +225,33 @@ main { min-height: 70vh; padding-bottom: 96px; outline: none; }
 .foot { background: var(--navy); color: #8D92A3; font-size: 12px; padding: 28px 20px calc(96px + env(safe-area-inset-bottom, 0px)); text-align: center; border-top: 3px solid var(--red); }
 .foot p { margin: 4px 0; }
 @media (min-width: 820px) { .foot { padding-bottom: 28px; } }
+
+/* ---------- guide (Notion content) ---------- */
+.guide .page-title { font-size: clamp(24px, 5vw, 34px); }
+.g-en { margin: 0 0 14px; color: var(--mute); font-style: italic; font-size: 15px; }
+.g-sec { padding: 28px 0; border-top: 1px solid var(--rule); }
+.g-sec h2 { margin: 0 0 12px; font-size: 21px; }
+.g-sec > p { margin: 0 0 16px; max-width: 68ch; }
+.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.checks li { background: #fff; border: 1px solid var(--rule); border-left: 3px solid var(--red); border-radius: 0 8px 8px 0; padding: 14px 16px; }
+.checks li strong { display: block; font-size: 16px; }
+.checks li p { margin: 4px 0 0; font-size: 15px; color: #3A3D46; }
+.overview { margin: 0; border-top: 1px solid var(--ink); }
+.overview > div { display: grid; grid-template-columns: 110px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+.overview dt { font-weight: 700; font-size: 14px; }
+.overview dd { margin: 0; }
+.overview a, .visit a { color: var(--ink); }
+.benefits { list-style: none; margin: 0; padding: 0; counter-reset: b; }
+.benefits li { padding: 14px 0 14px 40px; border-bottom: 1px solid var(--rule); position: relative; }
+.benefits li::before { content: "🎁"; position: absolute; left: 4px; top: 14px; }
+.benefits strong { font-size: 16px; }
+.benefits p { margin: 4px 0 0; font-size: 15px; color: #3A3D46; }
+.small { font-size: 13px; color: var(--mute); }
+.visit { background: #fff; border: 1px solid var(--rule); border-radius: 12px; padding: 20px; }
+.visit h3 { margin: 0; font-size: 22px; }
+.visit h4 { margin: 18px 0 6px; font-size: 14px; color: #B8230F; }
+.visit p { margin: 4px 0; }
+.visit ul { margin: 0; padding-left: 20px; }
+.visit li { margin: 3px 0; }
+.visit li::marker { color: var(--red); }
+@media (max-width: 520px) { .overview > div { grid-template-columns: 1fr; gap: 2px; } }
