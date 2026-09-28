@@ -1,0 +1,378 @@
+/* =========================================================
+   APP — hash router + views (GitHub Pages 호환, 빌드 불필요)
+   ========================================================= */
+(function () {
+  const $app = document.getElementById("app");
+  const C = window.CONFIG, S = window.SCHEDULE, CO = window.COMPANIES;
+  const DAYS = C.event.days;
+
+  /* ---------- helpers ---------- */
+  const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
+  const TBC = '<span class="tbc">업데이트 예정</span>';
+  const val = (v) => (v ? esc(v) : TBC);
+  const initials = (n) => n.replace(/(Co\.|Ltd\.|Inc\.|,)/g, "").trim().split(/\s+/).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
+  const digits = (s) => String(s || "").replace(/[^\d]/g, "");
+  const tel = (s) => "tel:" + String(s || "").replace(/[^\d+]/g, "");
+
+  // Singapore time (UTC+8) → epoch ms
+  const sgt = (day, hhmm) => {
+    const [y, m, d] = day.split("-").map(Number), [h, mi] = hhmm.split(":").map(Number);
+    return Date.UTC(y, m - 1, d, h - 8, mi);
+  };
+  const nowMs = () => {
+    const q = new URLSearchParams(location.search).get("now"); // 테스트용: ?now=2026-10-08T14:35
+    if (q) { const [d, t] = q.split("T"); return sgt(d, t || "00:00"); }
+    return Date.now();
+  };
+  const sgClock = () => new Date(nowMs() + 8 * 3600e3).toISOString().slice(11, 16);
+
+  function allSlots() {
+    return DAYS.flatMap((d) => S[d].slots.map((s) => ({ ...s, day: d, t0: sgt(d, s.start), t1: sgt(d, s.end) })));
+  }
+
+  function liveState() {
+    const n = nowMs(), slots = allSlots();
+    const first = slots[0], last = slots[slots.length - 1];
+    if (n < first.t0) return { phase: "before", next: first, days: Math.ceil((first.t0 - n) / 864e5) };
+    if (n >= last.t1) return { phase: "after" };
+    const cur = slots.find((s) => n >= s.t0 && n < s.t1);
+    const next = slots.find((s) => s.t0 > n);
+    return { phase: "live", cur, next };
+  }
+
+  function pitcherNow() {
+    const n = nowMs();
+    return CO.find((c) => n >= sgt(DAYS[0], c.pitch) && n < sgt(DAYS[0], c.pitch) + 10 * 60e3) || null;
+  }
+
+  function typeLabel(t) {
+    return { ops: "운영", session: "세션", network: "네트워킹 피크", key: "CONNECT 핵심" }[t] || "";
+  }
+
+  /* ---------- views ---------- */
+  function viewHome() {
+    const st = liveState();
+    let live = "";
+    if (st.phase === "before") {
+      live = `<div class="live">
+        <p class="live-k">행사 시작까지</p>
+        <p class="live-big">D-${st.days}</p>
+        <p class="live-s">첫 일정 · ${esc(S[st.next.day].ko)} ${st.next.start} ${esc(st.next.ko.split("—")[0])}</p>
+      </div>`;
+    } else if (st.phase === "live") {
+      live = `<div class="live is-on">
+        <p class="live-k"><span class="dot"></span>지금 · SGT ${sgClock()}</p>
+        ${st.cur ? `<p class="live-now">${st.cur.pitch ? "Pitchstop 진행 중" : esc(st.cur.ko.split("—")[0])}</p><p class="live-s">${st.cur.start}–${st.cur.end} · ${typeLabel(st.cur.type)}${st.cur.pitch && pitcherNow() ? " · 발표: " + esc(pitcherNow().name) : ""}</p>` : `<p class="live-now">휴식 시간</p>`}
+        ${st.next ? `<p class="live-next">다음 ${st.next.start} · ${esc(st.next.ko.split("—")[0])}</p>` : ""}
+      </div>`;
+    } else {
+      live = `<div class="live"><p class="live-k">행사 종료</p><p class="live-now">함께해주셔서 감사합니다.</p><p class="live-s">후속 미팅 현황은 MY에서 확인하세요.</p></div>`;
+    }
+
+    const tiles = [
+      ["#/guide", "안내사항", "현장 운영 가이드 (Notion)"],
+      ["#/schedule", "CONNECT 전체일정", "10.8–10.9 추천 세션 · Pitchstop"],
+      ["#/companies", "기업 브로슈어", `참여 스타트업 ${CO.length}개사`],
+      ["#/shbc", "SHBC 일정", "Singapore Health & Biomedical Congress"],
+      ["#/contact", "운영사 연락", "WhatsApp · 카카오톡 · 전화"],
+      ["#/my", "우리 기업 공간", "미팅현황 · 사진 · 홍보페이지 (로그인)"],
+    ];
+
+    return `
+      <section class="hero">
+        <div class="hero-ring" aria-hidden="true"></div>
+        <div class="wrap">
+          <h1 class="hero-title">CONNECT<br><span>2026</span></h1>
+          <p class="hero-sub">Global Open Innovation Roadshow<br>at SHBC 2026 · Singapore Expo · 8–9 October</p>
+          ${live}
+        </div>
+      </section>
+      <section class="wrap">
+        <div class="tiles">
+          ${tiles.map(([h, t, d]) => `<a class="tile" href="${h}"><strong>${t}</strong><span>${d}</span></a>`).join("")}
+        </div>
+      </section>`;
+  }
+
+  function slotHTML(s, day, n) {
+    const t0 = sgt(day, s.start), t1 = sgt(day, s.end);
+    const on = n >= t0 && n < t1;
+    return `<li class="slot t-${s.type}${on ? " is-now" : ""}">
+      <div class="slot-time"><b>${s.start}</b><span>${s.end}</span></div>
+      <div class="slot-body">
+        <p class="slot-tag">${typeLabel(s.type)}${on ? ' <em>진행 중</em>' : ""}</p>
+        <h3>${esc(s.title)}</h3>
+        <p class="slot-ko">${esc(s.ko)}</p>
+        ${s.recs?.length ? `<ul class="recs">${s.recs.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>` : ""}
+        ${s.parallel ? `<div class="parallel"><p>동시 진행 세션</p>${s.parallel.map((p) => `<div class="par"><strong>${esc(p.title)}</strong><span>${esc(p.ko)}</span><em>${esc(p.rec)}</em></div>`).join("")}</div>` : ""}
+        ${s.pitch ? pitchList(day, n) : ""}
+      </div>
+    </li>`;
+  }
+
+  function pitchList(day, n) {
+    return `<ol class="pitch">${CO.map((c) => {
+      const [h, m] = c.pitch.split(":").map(Number);
+      const end = `${String(h + (m + 10 >= 60 ? 1 : 0)).padStart(2, "0")}:${String((m + 10) % 60).padStart(2, "0")}`;
+      const on = n >= sgt(day, c.pitch) && n < sgt(day, end);
+      return `<li class="${on ? "is-now" : ""}"><span>${c.pitch}</span><a href="#/company/${c.id}">${esc(c.name)}</a></li>`;
+    }).join("")}</ol><p class="note">기업별 5분 발표 + 5분 Q&A</p>`;
+  }
+
+  function viewSchedule(dayParam) {
+    const n = nowMs();
+    let day = DAYS.find((d) => d.endsWith(dayParam)) || null;
+    if (!day) { const today = new Date(n + 8 * 3600e3).toISOString().slice(0, 10); day = DAYS.includes(today) ? today : DAYS[0]; }
+    return `
+      <section class="wrap page">
+        <h1 class="page-title">CONNECT 2026 전체일정</h1>
+        <p class="lede">참여 스타트업을 위한 추천 세션과 현장 안내입니다. 시간은 모두 싱가포르 시간(SGT)입니다.</p>
+        <div class="daytabs" role="tablist">
+          ${DAYS.map((d) => `<a role="tab" aria-selected="${d === day}" href="#/schedule/${d.slice(-2)}" class="${d === day ? "on" : ""}"><b>${S[d].label}</b><span>${S[d].ko}</span></a>`).join("")}
+        </div>
+        <ol class="timeline">${S[day].slots.map((s) => slotHTML(s, day, n)).join("")}</ol>
+        <p class="note">전체 프로그램: <a href="${C.links.shbcProgramme}" target="_blank" rel="noopener">shbc.com.sg/programme</a></p>
+      </section>`;
+  }
+
+  function viewCompanies() {
+    return `
+      <section class="wrap page">
+        <h1 class="page-title">참여기업 브로슈어</h1>
+        <p class="lede">CONNECT 2026에 참여하는 한국 스타트업 ${CO.length}개사입니다. 기업을 누르면 상세 브로슈어가 열립니다.</p>
+        <ul class="cos">
+          ${CO.map((c) => `<li><a class="co" href="#/company/${c.id}">
+            <span class="logo-ph" aria-hidden="true">${initials(c.name)}</span>
+            <span class="co-main"><strong>${esc(c.name)}</strong><span>${esc(c.summary)}</span>
+            <span class="tags">${c.tags.map((t) => `<i>${esc(t)}</i>`).join("")}</span></span>
+            <span class="co-pitch">Pitch<br><b>${c.pitch}</b></span>
+          </a></li>`).join("")}
+        </ul>
+      </section>`;
+  }
+
+  function viewCompany(id) {
+    const c = CO.find((x) => x.id === id);
+    if (!c) return notFound();
+    const s = Auth.session();
+    const mine = s && s.company.id === c.id;
+    const i = CO.indexOf(c), prev = CO[i - 1], next = CO[i + 1];
+    return `
+      <article class="wrap page brochure">
+        <a class="back" href="#/companies">기업 목록</a>
+        <header class="bro-head">
+          <span class="logo-ph lg" aria-hidden="true">${initials(c.name)}</span>
+          <div>
+            <p class="bro-no">K-Startups ${String(c.no).padStart(2, "0")} / ${String(CO.length).padStart(2, "0")}</p>
+            <h1>${esc(c.name)}</h1>
+            ${c.legal ? `<p class="bro-legal">(of ${esc(c.legal)})</p>` : ""}
+            ${c.tagline ? `<p class="bro-tag">${esc(c.tagline)}</p>` : ""}
+          </div>
+        </header>
+        <dl class="facts">
+          <div><dt>대표</dt><dd>${val(c.rep)}</dd></div>
+          <div><dt>설립</dt><dd>${val(c.founded)}</dd></div>
+          <div><dt>소재지</dt><dd>${val(c.location)}</dd></div>
+          <div><dt>Pitchstop</dt><dd>10.8 ${c.pitch} SGT</dd></div>
+        </dl>
+        <div class="photo-ph" aria-label="Product / team photo placeholder">Product / team photo</div>
+        <section class="bro-sec"><h2>Core Business</h2><p>${c.core ? esc(c.core) : esc(c.summary)}</p></section>
+        <section class="bro-sec"><h2>Key Achievements</h2><p>${val(c.achievements)}</p></section>
+        <section class="bro-sec"><h2>Global Expansion Focus</h2><p>${val(c.expansion)}</p></section>
+        <section class="bro-sec"><h2>Contact</h2>
+          <p>${c.website ? `<a href="${esc(c.website)}" target="_blank" rel="noopener">${esc(c.website)}</a>` : TBC}<br>
+          ${c.email ? `<a href="mailto:${esc(c.email)}">${esc(c.email)}</a>` : ""} ${c.contactPerson ? esc(c.contactPerson) : ""}</p>
+        </section>
+        ${mine ? `<a class="btn" href="#/my">우리 기업 공간 열기</a>` : ""}
+        <nav class="pager">
+          ${prev ? `<a href="#/company/${prev.id}"><span>이전</span>${esc(prev.name)}</a>` : "<span></span>"}
+          ${next ? `<a class="r" href="#/company/${next.id}"><span>다음</span>${esc(next.name)}</a>` : "<span></span>"}
+        </nav>
+      </article>`;
+  }
+
+  function linkCard(href, title, desc, cta) {
+    return `<a class="linkcard" href="${href}" target="_blank" rel="noopener"><strong>${title}</strong><span>${desc}</span><em>${cta}</em></a>`;
+  }
+
+  function viewGuide() {
+    return `
+      <section class="wrap page">
+        <h1 class="page-title">안내사항</h1>
+        <p class="lede">현장 운영 가이드, 준비물, 체크리스트는 Notion 페이지에서 계속 업데이트됩니다.</p>
+        ${linkCard(C.links.guide, "2026 SHBC Research & Innovation 안내", "Notion에서 최신 안내사항을 확인하세요. 변경 사항은 이 페이지에 먼저 반영됩니다.", "Notion에서 열기")}
+        <h2 class="sub">꼭 기억할 시간</h2>
+        <ul class="keytimes">
+          <li><b>10.8 07:30–09:00</b>Congress Pass 수령 · 부스 설치 · 현장 브리핑 (09:00까지 완료)</li>
+          <li><b>10.8 14:30–16:00</b>Pitchstop — 기업별 5분 발표 + 5분 Q&A</li>
+          <li><b>10.9 08:30–08:45</b>부스 준비상태 확인 (재설치 불필요)</li>
+          <li><b>10.9 17:00</b>스타트업 카운터 운영 종료</li>
+        </ul>
+      </section>`;
+  }
+
+  function viewSHBC() {
+    return `
+      <section class="wrap page">
+        <h1 class="page-title">SHBC 2026</h1>
+        <p class="lede">Singapore Health & Biomedical Congress는 NHG Health의 연례 대표 헬스케어 컨퍼런스로, 23회째 매년 3,600명 이상이 참석합니다.</p>
+        ${linkCard(C.links.shbc, "SHBC 공식 웹사이트", "세션, 연사, 전시 정보 전체", "shbc.com.sg 열기")}
+        ${linkCard(C.links.shbcProgramme, "SHBC 전체 프로그램 & 시간표", "모든 트랙과 세션의 공식 일정", "프로그램 보기")}
+        <dl class="stats">
+          <div><dt>23</dt><dd>Editions of SHBC</dd></div>
+          <div><dt>3,600+</dt><dd>Delegates annually</dd></div>
+          <div><dt>1.5M</dt><dd>Residents served by NHG Health</dd></div>
+        </dl>
+        <p class="note">Organised by NHG Health · Co-organised with Lee Kong Chian School of Medicine · Supported by STB, Singapore Exhibition & Convention Bureau</p>
+      </section>`;
+  }
+
+  function contactButtons(p) {
+    const b = [];
+    if (p.whatsapp) b.push(`<a class="cbtn wa" href="https://wa.me/${digits(p.whatsapp)}" target="_blank" rel="noopener">WhatsApp</a>`);
+    if (p.kakao) b.push(`<a class="cbtn kk" href="${esc(p.kakao)}" target="_blank" rel="noopener">카카오톡</a>`);
+    if (p.phone) b.push(`<a class="cbtn ph" href="${tel(p.phone)}">전화하기</a>`);
+    return b.join("");
+  }
+
+  function viewContact() {
+    return `
+      <section class="wrap page">
+        <h1 class="page-title">운영사 연락</h1>
+        <p class="lede">현장에서 도움이 필요하면 바로 연락하세요. 싱가포르 현지에서는 WhatsApp이 가장 빠릅니다.</p>
+        <ul class="contacts">
+          ${C.contacts.map((p) => `<li class="contact">
+            <div><strong>${esc(p.name)}</strong><span>${esc(p.role)}</span>${p.phone ? `<span class="num">${esc(p.phone)}</span>` : ""}</div>
+            <div class="cbtns">${contactButtons(p)}</div>
+          </li>`).join("")}
+        </ul>
+        <p class="note">WhatsApp 버튼은 대화창을 엽니다. 음성통화는 대화창 상단의 통화 버튼을 누르세요.</p>
+      </section>`;
+  }
+
+  function viewLogin() {
+    const s = Auth.session();
+    if (s) { location.hash = "#/my"; return ""; }
+    return `
+      <section class="wrap page narrow">
+        <h1 class="page-title">기업 로그인</h1>
+        <p class="lede">미팅현황, 기업 사진, 홍보페이지는 참여기업 전용입니다. 운영사에서 받은 ID로 로그인하세요.</p>
+        ${Auth.isDemo() ? `<p class="demo">데모 모드 — 기업 ID(예: <code>beyondmedicine</code>)와 데모 비밀번호로 로그인됩니다. 실제 운영 전 Apps Script로 전환하세요.</p>` : ""}
+        <form id="loginForm" class="form" novalidate>
+          <label>기업 ID<input name="id" autocomplete="username" autocapitalize="none" required /></label>
+          <label>비밀번호<input name="password" type="password" autocomplete="current-password" required /></label>
+          <p class="err" id="loginErr" role="alert"></p>
+          <button class="btn" type="submit">로그인</button>
+        </form>
+      </section>`;
+  }
+
+  function viewMy() {
+    const s = Auth.session();
+    if (!s) {
+      return `<section class="wrap page narrow">
+        <h1 class="page-title">우리 기업 공간</h1>
+        <p class="lede">로그인하면 우리 기업의 미팅 일정, 현장 사진, 홍보페이지, 연락 정보를 한곳에서 볼 수 있습니다.</p>
+        <a class="btn" href="#/login">로그인</a></section>`;
+    }
+    const c = CO.find((x) => x.id === s.company.id) || { name: s.company.name, id: s.company.id };
+    setTimeout(loadPrivate, 0);
+    return `
+      <section class="wrap page">
+        <div class="my-head">
+          <div><p class="bro-no">우리 기업 공간</p><h1 class="page-title">${esc(c.name)}</h1></div>
+          <button class="btn ghost sm" id="logoutBtn" type="button">로그아웃</button>
+        </div>
+        <div id="myBody" class="my-grid"><p class="loading">불러오는 중…</p></div>
+      </section>`;
+  }
+
+  async function loadPrivate() {
+    const box = document.getElementById("myBody");
+    if (!box) return;
+    let d;
+    try { d = await Auth.getPrivate(); }
+    catch (e) { box.innerHTML = `<p class="err">${esc(e.message)}</p>`; return; }
+    const s = Auth.session();
+    const c = CO.find((x) => x.id === s.company.id) || {};
+    const empty = (what) => `<p class="empty">${what}</p>`;
+
+    const promo = d.promoUrl
+      ? `<a class="linkcard in" href="${esc(d.promoUrl)}" target="_blank" rel="noopener"><strong>홍보페이지 열기</strong><span>부스 QR로 연결되는 우리 기업 온라인 페이지</span><em>새 창에서 보기</em></a>
+         <button class="btn ghost sm" type="button" data-copy="${esc(d.promoUrl)}">링크 복사</button>`
+      : empty("아직 연결된 홍보페이지가 없습니다. 운영사에 페이지 링크를 전달해 주세요.");
+
+    const cal = d.calendarId
+      ? `<div class="embed"><iframe title="미팅 일정" loading="lazy" src="https://calendar.google.com/calendar/embed?src=${encodeURIComponent(d.calendarId)}&ctz=Asia%2FSingapore&mode=AGENDA&dates=20261008%2F20261010&showTitle=0&showPrint=0&showCalendars=0&showTz=1"></iframe></div>`
+      : empty("미팅 캘린더가 아직 연결되지 않았습니다. 운영사가 캘린더를 공유하면 이곳에 1:1 미팅 일정이 표시됩니다.");
+
+    const photos = d.driveFolderId
+      ? `<div class="embed tall"><iframe title="기업 사진" loading="lazy" src="https://drive.google.com/embeddedfolderview?id=${encodeURIComponent(d.driveFolderId)}#grid"></iframe></div>
+         <a class="btn ghost sm" href="https://drive.google.com/drive/folders/${encodeURIComponent(d.driveFolderId)}" target="_blank" rel="noopener">Drive 폴더 열기</a>`
+      : empty("사진 폴더가 아직 연결되지 않았습니다. 현장 사진은 행사 중 이 폴더에 자동으로 올라옵니다.");
+
+    const social = `<dl class="facts compact">
+        <div><dt>LinkedIn</dt><dd>${d.linkedin ? `<a href="${esc(d.linkedin)}" target="_blank" rel="noopener">${esc(d.linkedin.replace(/^https?:\/\/(www\.)?/, ""))}</a>` : TBC}</dd></div>
+        <div><dt>WhatsApp</dt><dd>${d.whatsapp ? `<a href="https://wa.me/${digits(d.whatsapp)}" target="_blank" rel="noopener">+${digits(d.whatsapp)}</a>` : TBC}</dd></div>
+        <div><dt>담당자</dt><dd>${val(d.contactPerson)}</dd></div>
+        <div><dt>Pitchstop</dt><dd>${c.pitch ? "10.8 " + c.pitch + " SGT" : TBC}</dd></div>
+      </dl>`;
+
+    box.innerHTML = `
+      <section class="panel"><h2>미팅현황</h2>${cal}</section>
+      <section class="panel"><h2>홍보페이지</h2>${promo}</section>
+      <section class="panel"><h2>LinkedIn · WhatsApp</h2>${social}</section>
+      <section class="panel wide"><h2>기업 사진</h2>${photos}</section>`;
+  }
+
+  function notFound() {
+    return `<section class="wrap page narrow"><h1 class="page-title">페이지를 찾을 수 없습니다</h1><p class="lede">주소가 바뀌었거나 삭제된 페이지입니다.</p><a class="btn" href="#/">홈으로</a></section>`;
+  }
+
+  /* ---------- router ---------- */
+  function route(keepScroll) {
+    const parts = location.hash.replace(/^#\/?/, "").split("/");
+    const [p, a] = parts;
+    const views = {
+      "": viewHome, schedule: () => viewSchedule(a), companies: viewCompanies,
+      company: () => viewCompany(a), guide: viewGuide, shbc: viewSHBC,
+      contact: viewContact, login: viewLogin, my: viewMy,
+    };
+    const html = (views[p] || notFound)();
+    if (html) $app.innerHTML = html;
+    const key = p === "" ? "home" : p === "company" ? "companies" : p === "login" ? "my" : p;
+    document.querySelectorAll("[data-nav]").forEach((el) => el.classList.toggle("on", el.dataset.nav === key));
+    const s = Auth.session();
+    const chip = document.getElementById("loginChip");
+    chip.textContent = s ? s.company.name.split(/\s|,/)[0] : "로그인";
+    chip.href = s ? "#/my" : "#/login";
+    if (keepScroll !== true) window.scrollTo(0, 0);
+    bind();
+  }
+
+  function bind() {
+    const f = document.getElementById("loginForm");
+    if (f) f.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const err = document.getElementById("loginErr"), btn = f.querySelector("button");
+      err.textContent = ""; btn.disabled = true; btn.textContent = "확인 중…";
+      try { await Auth.login(f.elements.namedItem("id").value, f.elements.namedItem("password").value); location.hash = "#/my"; }
+      catch (x) { err.textContent = x.message; btn.disabled = false; btn.textContent = "로그인"; }
+    });
+    const lo = document.getElementById("logoutBtn");
+    if (lo) lo.addEventListener("click", () => { Auth.logout(); location.hash = "#/"; });
+  }
+
+  document.addEventListener("click", async (e) => {
+    const b = e.target.closest("[data-copy]");
+    if (!b) return;
+    try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = "복사됨"; }
+    catch (x) { b.textContent = "복사 실패 — 길게 눌러 복사"; }
+    setTimeout(() => (b.textContent = "링크 복사"), 1800);
+  });
+
+  window.addEventListener("hashchange", () => route());
+  route();
+  // 홈 화면의 '지금' 표시를 1분마다 갱신
+  setInterval(() => { if (/^#?\/?$/.test(location.hash)) route(true); }, 60000);
+})();
