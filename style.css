@@ -255,3 +255,5 @@ main { min-height: 70vh; padding-bottom: 96px; outline: none; }
 .visit li { margin: 3px 0; }
 .visit li::marker { color: var(--red); }
 @media (max-width: 520px) { .overview > div { grid-template-columns: 1fr; gap: 2px; } }
+.btnrow { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 14px; }
+.btnrow .btn { margin-top: 0; }

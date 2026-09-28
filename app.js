@@ -369,14 +369,28 @@
          <button class="btn ghost sm" type="button" data-copy="${esc(d.promoUrl)}">링크 복사</button>`
       : empty("아직 연결된 홍보페이지가 없습니다. 운영사에 페이지 링크를 전달해 주세요.");
 
-    const cal = d.calendarId
-      ? `<div class="embed"><iframe title="미팅 일정" loading="lazy" src="https://calendar.google.com/calendar/embed?src=${encodeURIComponent(d.calendarId)}&ctz=Asia%2FSingapore&mode=AGENDA&dates=20261008%2F20261010&showTitle=0&showPrint=0&showCalendars=0&showTz=1"></iframe></div>`
-      : empty("미팅 캘린더가 아직 연결되지 않았습니다. 운영사가 캘린더를 공유하면 이곳에 1:1 미팅 일정이 표시됩니다.");
+    const folderId = ((d.photoFolder || "").match(/folders\/([\w-]+)/) || [])[1] || d.driveFolderId || "";
+    const bookingSrc = d.bookingUrl ? d.bookingUrl + (d.bookingUrl.includes("?") ? "&" : "?") + "gv=true" : "";
 
-    const photos = d.driveFolderId
-      ? `<div class="embed tall"><iframe title="기업 사진" loading="lazy" src="https://drive.google.com/embeddedfolderview?id=${encodeURIComponent(d.driveFolderId)}#grid"></iframe></div>
-         <a class="btn ghost sm" href="https://drive.google.com/drive/folders/${encodeURIComponent(d.driveFolderId)}" target="_blank" rel="noopener">Drive 폴더 열기</a>`
-      : empty("사진 폴더가 아직 연결되지 않았습니다. 현장 사진은 행사 중 이 폴더에 자동으로 올라옵니다.");
+    const partnering = `
+      ${d.bookingUrl && !d.bookingUrl.includes("/appointments/schedules/")
+        ? `<a class="linkcard in" href="${esc(d.bookingUrl)}" target="_blank" rel="noopener"><strong>1:1 파트너링 캘린더</strong><span>예약 가능한 미팅 시간을 확인하고 예약하는 페이지</span><em>캘린더 열기</em></a>
+           <div class="btnrow"><button class="btn ghost sm" type="button" data-copy="${esc(d.bookingUrl)}">링크 복사</button></div>`
+        : d.bookingUrl
+        ? `<div class="embed tall"><iframe title="1:1 파트너링 캘린더" loading="lazy" src="${esc(bookingSrc)}"></iframe></div>
+           <div class="btnrow"><a class="btn ghost sm" href="${esc(d.bookingUrl)}" target="_blank" rel="noopener">캘린더 새 창에서 열기</a>
+           <button class="btn ghost sm" type="button" data-copy="${esc(d.bookingUrl)}">링크 복사</button></div>`
+        : empty("1:1 파트너링 캘린더가 아직 연결되지 않았습니다.")}
+      ${d.formUrl
+        ? `<a class="linkcard in" href="${esc(d.formUrl)}" target="_blank" rel="noopener"><strong>1:1 파트너링 신청</strong><span>미팅을 원하는 파트너가 작성하는 신청서</span><em>신청서 열기</em></a>
+           <button class="btn ghost sm" type="button" data-copy="${esc(d.formUrl)}">링크 복사</button>`
+        : empty("1:1 파트너링 신청서가 아직 연결되지 않았습니다.")}`;
+
+    const photos = folderId
+      ? `<div class="embed tall"><iframe title="기업 사진" loading="lazy" src="https://drive.google.com/embeddedfolderview?id=${encodeURIComponent(folderId)}#grid"></iframe></div>
+         <div class="btnrow"><a class="btn sm" href="https://drive.google.com/drive/folders/${encodeURIComponent(folderId)}" target="_blank" rel="noopener">사진 올리기</a></div>
+         <p class="note">사진 올리기를 누르면 구글 드라이브 폴더가 열립니다. 보여주고 싶은 사진을 끌어다 놓으면 이곳에 표시됩니다.</p>`
+      : empty("사진 폴더가 아직 연결되지 않았습니다.");
 
     const social = `<dl class="facts compact">
         <div><dt>LinkedIn</dt><dd>${d.linkedin ? `<a href="${esc(d.linkedin)}" target="_blank" rel="noopener">${esc(d.linkedin.replace(/^https?:\/\/(www\.)?/, ""))}</a>` : TBC}</dd></div>
@@ -386,7 +400,7 @@
       </dl>`;
 
     box.innerHTML = `
-      <section class="panel"><h2>미팅현황</h2>${cal}</section>
+      <section class="panel"><h2>1:1 파트너링</h2>${partnering}</section>
       <section class="panel"><h2>홍보페이지</h2>${promo}</section>
       <section class="panel"><h2>LinkedIn · WhatsApp</h2>${social}</section>
       <section class="panel wide"><h2>기업 사진</h2>${photos}</section>`;

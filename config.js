@@ -49,16 +49,25 @@ window.CONFIG = {
     demoPassword: "demo2026", // 데모 모드 전용 — 실제 운영 전 반드시 Apps Script로 전환
   },
 
-  /* 데모 모드용 기업별 비공개 데이터 (샘플)
-     Apps Script 연결 후에는 이 값 대신 서버 응답이 사용됩니다. */
+  /* 기업별 링크 — 기업 ID마다 아래 7개 칸을 채우세요. 링크는 주소창 URL을 그대로 붙여넣으면 됩니다.
+     빈 값("")이면 해당 칸은 "아직 연결되지 않았습니다"로 표시됩니다.
+     (Apps Script 연결 후에는 이 값 대신 서버 응답이 사용됩니다.) */
   demoPrivate: {
     beyondmedicine: {
-      promoUrl: "https://claude.ai/artifact/NEPu9hYPUtH8dYhZYNLmaw",
-      calendarId: "",      // 예: abc123@group.calendar.google.com
-      driveFolderId: "",   // 예: 1AbCdEfGh... (폴더 URL의 /folders/ 뒤 값)
+      promoUrl:   "https://claude.ai/artifact/NEPu9hYPUtH8dYhZYNLmaw",
+      bookingUrl: "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0kevWQ4ptjVDvCvmj_ULiG5q9IHanGP_I0wQx7HkY8ztGPQH82tfdmWR-0N96IVglg0Z5PQqxu",
+      formUrl:    "https://forms.gle/jq9qFXXrzbCi6VHE9",
+      photoFolder:"https://drive.google.com/drive/folders/1hoAxgEbA19pHYJ-hkzV_2NS6O6-tjg_8?usp=sharing",
       linkedin: "",
       whatsapp: "",
       contactPerson: "",
     },
+    speechnrt:      { promoUrl: "", bookingUrl: "", formUrl: "", photoFolder: "", linkedin: "", whatsapp: "", contactPerson: "" },
+    lifefuturetech: { promoUrl: "", bookingUrl: "", formUrl: "", photoFolder: "", linkedin: "", whatsapp: "", contactPerson: "" },
+    cdthera:        { promoUrl: "", bookingUrl: "https://calendar.app.google/fwRLcLNnuvLpx3V19", formUrl: "", photoFolder: "https://drive.google.com/drive/folders/1Itz31kzw3wSksmmKKdMBV0g16WWJl102?usp=sharing", linkedin: "", whatsapp: "", contactPerson: "" },
+    careminder:     { promoUrl: "", bookingUrl: "https://calendar.app.google/ABXycQ2Lka1MFFtn9", formUrl: "", photoFolder: "https://drive.google.com/drive/folders/1X3vhaW9kHIEsttRYX2wbBL3kqMw6YsL3?usp=sharing", linkedin: "", whatsapp: "", contactPerson: "" },
+    jeongjin:       { promoUrl: "", bookingUrl: "https://calendar.app.google/QNb2hBfaxxh8ARUa6", formUrl: "", photoFolder: "https://drive.google.com/drive/folders/1YuZPB8ZqGRu1V7ELwhxzzxUTuL3q0t6Q?usp=sharing", linkedin: "", whatsapp: "", contactPerson: "" },
+    inexoplat:      { promoUrl: "", bookingUrl: "https://calendar.app.google/UjGfYCcMcfpmciTAA", formUrl: "", photoFolder: "https://drive.google.com/drive/folders/1nGBkvW0yKNKfEFuPMFSSRXdisI00L1DT?usp=sharing", linkedin: "", whatsapp: "", contactPerson: "" },
+    imitarscience:  { promoUrl: "", bookingUrl: "https://calendar.app.google/zVNDd3SdVKdZTKJM9", formUrl: "", photoFolder: "https://drive.google.com/drive/folders/1Zhf4RC9Gjub76kOpSU5F9XYFWuLfzrpn?usp=sharing", linkedin: "", whatsapp: "", contactPerson: "" },
   },
 };
