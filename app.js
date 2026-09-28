@@ -208,6 +208,7 @@
 
         <section class="g-sec">
           <h2>🎪 SHBC 소개</h2>
+          <figure class="g-logo shbc"><img src="shbc-logo.jpg" alt="Singapore Health & Biomedical Congress 2026 로고" width="1000" height="500" loading="lazy"></figure>
           <p><strong>Singapore Health & Biomedical Congress (SHBC)</strong>는 <strong>NHG Health가 매년 개최하는 대표적인 헬스케어·바이오메디컬 컨퍼런스</strong>로, 의료·연구·산업 분야 전문가들이 한자리에 모여 최신 의료기술과 연구 성과를 공유하는 싱가포르의 대표적인 학술 및 산업 행사입니다.</p>
           ${checks([
             ["싱가포르 대표 헬스케어·바이오메디컬 컨퍼런스", "<strong>NHG Health</strong>의 연례 플래그십(Flagship) 행사로, 의료 혁신과 연구 성과를 공유하고 미래 의료 발전 방향을 논의하는 싱가포르의 대표적인 헬스케어·바이오메디컬 행사입니다."],
@@ -218,6 +219,7 @@
 
         <section class="g-sec">
           <h2>🧬 NHG Health 소개</h2>
+          <figure class="g-logo nhg"><img src="nhg-logo.png" alt="NHG Health 로고" width="500" height="323" loading="lazy"></figure>
           <p><strong>NHG Health</strong>는 싱가포르를 대표하는 공공 의료기관으로, <strong>예방 중심의 의료서비스와 환자 중심(Person-centred)의 헬스케어</strong>를 통해 국민의 건강한 삶을 지원하고 있습니다.</p>
           ${checks([
             ["예방 중심의 통합 헬스케어 제공", "우수한 임상 진료를 기반으로 예방의학, 건강증진, 맞춤형 의료서비스를 제공하며, 생애주기별 건강관리 프로그램을 통해 질병 치료를 넘어 지속 가능한 건강 증진을 실현하고 있습니다."],
@@ -281,6 +283,7 @@
   function viewSHBC() {
     return `
       <section class="wrap page">
+        <figure class="g-logo shbc"><img src="shbc-logo.jpg" alt="Singapore Health & Biomedical Congress 2026 로고" width="1000" height="500"></figure>
         <h1 class="page-title">SHBC 전체일정</h1>
         <p class="lede">Singapore Health & Biomedical Congress는 NHG Health의 연례 대표 헬스케어 컨퍼런스로, 23회째 매년 3,600명 이상이 참석합니다.</p>
         ${linkCard(C.links.shbc, "SHBC 공식 웹사이트", "세션, 연사, 전시 정보 전체", "shbc.com.sg 열기")}
@@ -290,6 +293,7 @@
           <div><dt>3,600+</dt><dd>Delegates annually</dd></div>
           <div><dt>1.5M</dt><dd>Residents served by NHG Health</dd></div>
         </dl>
+        <figure class="g-logo nhg sm"><img src="nhg-logo.png" alt="NHG Health 로고" width="500" height="323" loading="lazy"></figure>
         <p class="note">Organised by NHG Health · Co-organised with Lee Kong Chian School of Medicine · Supported by STB, Singapore Exhibition & Convention Bureau</p>
       </section>`;
   }

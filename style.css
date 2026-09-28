@@ -257,3 +257,10 @@ main { min-height: 70vh; padding-bottom: 96px; outline: none; }
 @media (max-width: 520px) { .overview > div { grid-template-columns: 1fr; gap: 2px; } }
 .btnrow { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 14px; }
 .btnrow .btn { margin-top: 0; }
+.g-logo { margin: 0 0 18px; }
+.g-logo img { display: block; height: auto; border-radius: 10px; }
+.g-logo.shbc img { width: 100%; max-width: 480px; }
+.g-logo.nhg { background: #fff; border: 1px solid var(--rule); border-radius: 10px; padding: 16px 20px; width: fit-content; }
+.g-logo.nhg img { width: 180px; border-radius: 0; }
+.g-logo.nhg.sm { margin-top: 24px; }
+.g-logo.nhg.sm img { width: 120px; }
