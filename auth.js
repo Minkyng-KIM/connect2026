@@ -60,8 +60,21 @@ window.Auth = (function () {
     return r.data || {};
   }
 
+  async function update(fields) {
+    const s = read();
+    if (!s) throw new Error("로그인이 필요합니다.");
+    if (s.demo) throw new Error("데모 모드에서는 저장할 수 없습니다.");
+    const r = await call({ action: "update", token: s.token, fields });
+    if (!r.ok) {
+      if (r.error === "expired") { write(null); throw new Error("세션이 만료되었습니다. 다시 로그인하세요."); }
+      throw new Error(r.error || "저장하지 못했습니다.");
+    }
+    return r.data || {};
+  }
+
   return {
     isDemo,
+    update,
     session: read,
     login,
     logout: () => write(null),

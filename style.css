@@ -282,3 +282,7 @@ table.resp td { padding: 9px 10px; border-top: 1px solid var(--rule); vertical-a
 table.resp tr:nth-child(even) td { background: #FAFAF8; }
 table.resp td a { color: var(--ink); }
 .panel-sub { font-size: 14px; margin: 22px 0 10px; padding-top: 16px; border-top: 1px solid var(--rule); }
+.compact-form { gap: 10px; }
+.compact-form input { padding: 10px 12px; font-size: 15px; }
+[hidden] { display: none !important; }
+button.cbtn { font: inherit; font-weight: 700; font-size: 15px; border: 0; cursor: pointer; }

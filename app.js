@@ -280,6 +280,7 @@
     const b = [];
     if (p.whatsapp) b.push(`<a class="cbtn wa" href="https://wa.me/${digits(p.whatsapp)}" target="_blank" rel="noopener">WhatsApp</a>`);
     if (p.kakao) b.push(`<a class="cbtn kk" href="${esc(p.kakao)}" target="_blank" rel="noopener">카카오톡</a>`);
+    else if (p.kakaoPhone) b.push(`<button class="cbtn kk" type="button" data-copy="${esc(p.kakaoPhone)}" data-label="카카오톡" data-done="번호 복사됨">카카오톡</button>`);
     if (p.phone) b.push(`<a class="cbtn ph" href="${tel(p.phone)}">전화하기</a>`);
     return b.join("");
   }
@@ -295,7 +296,7 @@
             <div class="cbtns">${contactButtons(p)}</div>
           </li>`).join("")}
         </ul>
-        <p class="note">WhatsApp 버튼은 대화창을 엽니다. 음성통화는 대화창 상단의 통화 버튼을 누르세요.</p>
+        <p class="note">WhatsApp 버튼은 대화창을 엽니다. 음성통화는 대화창 상단의 통화 버튼을 누르세요.<br>카카오톡 버튼은 전화번호를 복사합니다. 카카오톡 → 친구 추가 → 연락처로 추가에 붙여넣으면 대화할 수 있습니다.</p>
       </section>`;
   }
 
@@ -389,19 +390,46 @@
          <p class="note">사진 올리기를 누르면 구글 드라이브 폴더가 열립니다. 보여주고 싶은 사진을 끌어다 놓으면 이곳에 표시됩니다.</p>`
       : empty("사진 폴더가 아직 연결되지 않았습니다.");
 
-    const social = `<dl class="facts compact">
+    const social = `<dl class="facts compact" id="socialView">
         <div><dt>LinkedIn</dt><dd>${d.linkedin ? `<a href="${esc(d.linkedin)}" target="_blank" rel="noopener">${esc(d.linkedin.replace(/^https?:\/\/(www\.)?/, ""))}</a>` : TBC}</dd></div>
         <div><dt>WhatsApp</dt><dd>${d.whatsapp ? `<a href="https://wa.me/${digits(d.whatsapp)}" target="_blank" rel="noopener">+${digits(d.whatsapp)}</a>` : TBC}</dd></div>
         <div><dt>담당자</dt><dd>${val(d.contactPerson)}</dd></div>
         <div><dt>Pitchstop</dt><dd>${c.pitch ? "10.8 " + c.pitch + " SGT" : TBC}</dd></div>
-      </dl>`;
+      </dl>
+      ${Auth.isDemo() ? "" : `<button class="btn ghost sm" type="button" id="editSocial">정보 입력·수정</button>
+      <form class="form compact-form" id="socialForm" hidden novalidate>
+        <label>LinkedIn 주소<input name="linkedin" type="url" inputmode="url" placeholder="https://www.linkedin.com/company/..." value="${esc(d.linkedin || "")}"></label>
+        <label>WhatsApp 번호<input name="whatsapp" inputmode="tel" placeholder="국가번호 포함 숫자 (예: 821012345678)" value="${esc(d.whatsapp || "")}"></label>
+        <label>담당자 이름 / 직함<input name="contactPerson" maxlength="80" placeholder="예: Minji Kim / BD Manager" value="${esc(d.contactPerson || "")}"></label>
+        <p class="err" id="socialErr" role="alert"></p>
+        <div class="btnrow"><button class="btn sm" type="submit">저장</button><button class="btn ghost sm" type="button" id="cancelSocial">취소</button></div>
+      </form>`}`;
 
     box.innerHTML = `
       <section class="panel wide"><h2>1:1 파트너링 캘린더</h2>${calendar}</section>
       <section class="panel wide"><h2>1:1 파트너링 신청 · 신청 현황</h2>${form}<h3 class="panel-sub">신청 현황</h3>${responses}</section>
       <section class="panel"><h2>홍보페이지</h2>${promo}</section>
-      <section class="panel"><h2>LinkedIn · WhatsApp</h2>${social}</section>
+      <section class="panel"><h2>LinkedIn · WhatsApp · 담당자</h2>${social}</section>
       <section class="panel wide"><h2>기업 사진</h2>${photos}</section>`;
+    const sf = document.getElementById("socialForm"), eb = document.getElementById("editSocial");
+    if (sf && eb) {
+      const toggle = (open) => { sf.hidden = !open; eb.hidden = open; document.getElementById("socialView").hidden = open; };
+      eb.addEventListener("click", () => toggle(true));
+      document.getElementById("cancelSocial").addEventListener("click", () => toggle(false));
+      sf.addEventListener("submit", async (ev) => {
+        ev.preventDefault();
+        const btn = sf.querySelector("button[type=submit]"), err = document.getElementById("socialErr");
+        err.textContent = ""; btn.disabled = true; btn.textContent = "저장 중…";
+        try {
+          await Auth.update({
+            linkedin: sf.elements.namedItem("linkedin").value,
+            whatsapp: sf.elements.namedItem("whatsapp").value,
+            contactPerson: sf.elements.namedItem("contactPerson").value,
+          });
+          box.innerHTML = '<p class="loading">저장됨 · 다시 불러오는 중…</p>'; loadPrivate();
+        } catch (x) { err.textContent = x.message; btn.disabled = false; btn.textContent = "저장"; }
+      });
+    }
     const rb = document.getElementById("reloadResp");
     if (rb) rb.addEventListener("click", () => { box.innerHTML = '<p class="loading">불러오는 중…</p>'; loadPrivate(); });
   }
@@ -447,9 +475,10 @@
   document.addEventListener("click", async (e) => {
     const b = e.target.closest("[data-copy]");
     if (!b) return;
-    try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = "복사됨"; }
-    catch (x) { b.textContent = "복사 실패 — 길게 눌러 복사"; }
-    setTimeout(() => (b.textContent = "링크 복사"), 1800);
+    const label = b.dataset.label || "링크 복사";
+    try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = b.dataset.done || "복사됨"; }
+    catch (x) { b.textContent = b.dataset.copy; }
+    setTimeout(() => (b.textContent = label), 2200);
   });
 
   window.addEventListener("hashchange", () => route());
