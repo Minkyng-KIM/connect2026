@@ -394,7 +394,7 @@
         <div><dt>LinkedIn</dt><dd>${d.linkedin ? `<a href="${esc(d.linkedin)}" target="_blank" rel="noopener">${esc(d.linkedin.replace(/^https?:\/\/(www\.)?/, ""))}</a>` : TBC}</dd></div>
         <div><dt>WhatsApp</dt><dd>${d.whatsapp ? `<a href="https://wa.me/${digits(d.whatsapp)}" target="_blank" rel="noopener">+${digits(d.whatsapp)}</a>` : TBC}</dd></div>
         <div><dt>담당자</dt><dd>${val(d.contactPerson)}</dd></div>
-        <div><dt>Pitchstop</dt><dd>${c.pitch ? "10.8 " + c.pitch + " SGT" : TBC}</dd></div>
+        <div><dt>Pitchstop (피칭시간)</dt><dd>${c.pitch ? `10월 8일 ${c.pitch}<span class="pitch-note">*꼭 10분 전 대기해주세요</span>` : TBC}</dd></div>
       </dl>
       ${Auth.isDemo() ? "" : `<button class="btn ghost sm" type="button" id="editSocial">정보 입력·수정</button>
       <form class="form compact-form" id="socialForm" hidden novalidate>

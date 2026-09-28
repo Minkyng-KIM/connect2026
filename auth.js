@@ -12,7 +12,11 @@ window.Auth = (function () {
   const isDemo = () => !url();
 
   function read() {
-    try { return JSON.parse(sessionStorage.getItem(KEY)) || null; } catch (e) { return null; }
+    let s = null;
+    try { s = JSON.parse(sessionStorage.getItem(KEY)) || null; } catch (e) { s = null; }
+    // 데모 모드에서 로그인했던 세션이 남아 있으면 실제 로그인으로 전환 시 폐기
+    if (s && !!s.demo !== isDemo()) { write(null); return null; }
+    return s;
   }
   function write(s) {
     try { s ? sessionStorage.setItem(KEY, JSON.stringify(s)) : sessionStorage.removeItem(KEY); } catch (e) {}
