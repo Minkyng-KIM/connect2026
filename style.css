@@ -289,3 +289,4 @@ button.cbtn { font: inherit; font-weight: 700; font-size: 15px; border: 0; curso
 .pitch-note { display: block; margin-top: 4px; font-size: 13px; font-weight: 600; color: #8B5A2B; }
 .facts.compact { grid-template-columns: 1fr 1fr; }
 .facts.compact > div.full { grid-column: 1 / -1; }
+.opt { font-weight: 400; color: var(--mute); font-size: 12px; }

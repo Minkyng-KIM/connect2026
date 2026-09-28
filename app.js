@@ -394,7 +394,8 @@
         <div><dt>LinkedIn</dt><dd>${d.linkedin ? `<a href="${esc(d.linkedin)}" target="_blank" rel="noopener">${esc(d.linkedin.replace(/^https?:\/\/(www\.)?/, ""))}</a>` : TBC}</dd></div>
         <div><dt>WhatsApp</dt><dd>${d.whatsapp ? `<a href="https://wa.me/${digits(d.whatsapp)}" target="_blank" rel="noopener">+${digits(d.whatsapp)}</a>` : TBC}</dd></div>
         <div><dt>대표</dt><dd>${val(d.representative)}</dd></div>
-        <div><dt>담당자</dt><dd>${val(d.contactPerson)}</dd></div>
+        <div><dt>담당자 1</dt><dd>${val(d.contactPerson)}</dd></div>
+        <div><dt>담당자 2</dt><dd>${d.contactPerson2 ? esc(d.contactPerson2) : '<span class="tbc">없음</span>'}</dd></div>
         <div class="full"><dt>Pitchstop (피칭시간)</dt><dd>${c.pitch ? `10월 8일 ${c.pitch}<span class="pitch-note">*꼭 10분 전 대기해주세요</span>` : TBC}</dd></div>
       </dl>
       ${Auth.isDemo() ? "" : `<button class="btn ghost sm" type="button" id="editSocial">정보 입력·수정</button>
@@ -402,7 +403,8 @@
         <label>LinkedIn 주소<input name="linkedin" type="url" inputmode="url" placeholder="https://www.linkedin.com/company/..." value="${esc(d.linkedin || "")}"></label>
         <label>WhatsApp 번호<input name="whatsapp" inputmode="tel" placeholder="국가번호 포함 숫자 (예: 821012345678)" value="${esc(d.whatsapp || "")}"></label>
         <label>대표 이름 / 직함<input name="representative" maxlength="80" placeholder="예: Jihoon Park / CEO" value="${esc(d.representative || "")}"></label>
-        <label>담당자 이름 / 직함<input name="contactPerson" maxlength="80" placeholder="예: Minji Kim / BD Manager" value="${esc(d.contactPerson || "")}"></label>
+        <label>담당자 1 이름 / 직함<input name="contactPerson" maxlength="80" placeholder="예: Minji Kim / BD Manager" value="${esc(d.contactPerson || "")}"></label>
+        <label>담당자 2 이름 / 직함 <span class="opt">(없으면 비워두세요)</span><input name="contactPerson2" maxlength="80" placeholder="예: Sora Lee / R&D Lead" value="${esc(d.contactPerson2 || "")}"></label>
         <p class="err" id="socialErr" role="alert"></p>
         <div class="btnrow"><button class="btn sm" type="submit">저장</button><button class="btn ghost sm" type="button" id="cancelSocial">취소</button></div>
       </form>`}`;
@@ -428,6 +430,7 @@
             whatsapp: sf.elements.namedItem("whatsapp").value,
             representative: sf.elements.namedItem("representative").value,
             contactPerson: sf.elements.namedItem("contactPerson").value,
+            contactPerson2: sf.elements.namedItem("contactPerson2").value,
           });
           box.innerHTML = '<p class="loading">저장됨 · 다시 불러오는 중…</p>'; loadPrivate();
         } catch (x) { err.textContent = x.message; btn.disabled = false; btn.textContent = "저장"; }
