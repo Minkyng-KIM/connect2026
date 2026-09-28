@@ -264,3 +264,6 @@ main { min-height: 70vh; padding-bottom: 96px; outline: none; }
 .g-logo.nhg img { width: 180px; border-radius: 0; }
 .g-logo.nhg.sm { margin-top: 24px; }
 .g-logo.nhg.sm img { width: 120px; }
+.g-photo { margin: 12px 0 4px; }
+.g-photo img { display: block; width: 100%; height: auto; border-radius: 8px; }
+.g-photo figcaption { text-align: center; font-size: 13px; color: var(--mute); margin-top: 6px; }

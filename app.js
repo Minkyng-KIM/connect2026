@@ -235,7 +235,7 @@
             <div><dt>목적</dt><dd>SHBC 참가자들을 대상으로 스타트업의 역량 및 솔루션을 홍보할 수 있는 기회 제공</dd></div>
             <div><dt>일정</dt><dd>2026년 10월 8일(목) ~ 10월 9일(금)</dd></div>
             <div><dt>장소</dt><dd>Singapore Expo<br><a href="https://www.google.com/maps/search/?api=1&query=1+Expo+Dr+Singapore+486150" target="_blank" rel="noopener">📍 1 Expo Dr, Singapore 486150</a></dd></div>
-            <div><dt>참가 대상</dt><dd>헬스&바이오메디컬 스타트업 7개사</dd></div>
+            <div><dt>참가 대상</dt><dd>헬스&바이오메디컬 스타트업 8개사</dd></div>
           </dl>
         </section>
 
@@ -243,37 +243,14 @@
           <h2>🎁 프로그램 참여 혜택</h2>
           <ul class="benefits">
             <li><strong>Full Congress Pass 지원</strong><p>Full Congress Pass로 이틀 간 진행되는 모든 컨퍼런스 세션 참석 및 전시 구역 입장 가능<br>Tea Break 및 Lunch 제공</p></li>
-            <li><strong>스타트업 쇼케이스 전시 공간 제공</strong><p>Research and Innovation @ NHG Health 전시 구역 내 7개 스타트업 개별 공간 배정<br>카운터(약 높이 1m x 길이 1m x 폭 0.5m 상당, 전면 기업 로고 인쇄 포함, 1개) 및 풀업 배너, 전원 콘센트 제공</p></li>
-            <li><strong>스타트업 전용 투자 피칭 세션 운영</strong><p>Research and Innovation @ NHG Health 무대 내 약 1시간의 전용 프로그램 배정<br><span class="small">* 공용 무대를 사용하며, 전체 무대 일정 중 특정 세션을 전용으로 확보하는 방식</span><br>기업 당 발표 5분, Q&A 5분으로 총 10분 배정</p></li>
+            <li><strong>스타트업 쇼케이스 전시 공간 제공</strong><p>Research and Innovation @ NHG Health 전시 구역 내 8개 스타트업 개별 공간 배정<br>카운터(약 높이 1m x 길이 1m x 폭 0.5m 상당, 전면 기업 로고 인쇄 포함, 1개) 및 풀업 배너, 전원 콘센트 제공</p></li>
+            <li><strong>스타트업 전용 투자 피칭 세션 운영</strong><p>Research and Innovation @ NHG Health 무대 내 약 1시간의 전용 프로그램 배정<br><span class="small">* 공용 무대를 사용하며, 전체 무대 일정 중 특정 세션을 전용으로 확보하는 방식</span><br>기업 당 발표 5분, Q&A 5분으로 총 10분 배정</p>
+              <figure class="g-photo"><img src="pitchstop-2025.jpg" alt="2025 The Pitchstop 현장 사진" loading="lazy"><figcaption>&lt;2025 The Pitchstop&gt;</figcaption></figure></li>
             <li><strong>투자사 피드백 리포트 제공</strong><p>피칭 세션 종료 후 투자사 피드백 리포트(5-7건) 제공</p></li>
             <li><strong>스타트업별 맞춤형 1:1 미팅 3회 지원</strong><p>핵심 밸류 프로포지션인 NHG Health 소속 관련 임상의(Clinician)들과의 큐레이션된 1:1 미팅 3회 보장<br><span class="small">* 행사 전/후 온라인 미팅으로 진행 예정이나, 임상의 일정이 가능한 경우 현장 대면 미팅 진행 가능</span></p></li>
+            <li><strong>전시 공간 예시</strong>
+              <figure class="g-photo"><img src="booth-example.jpg" alt="Research & Innovation @ NHG Health 전시 공간 예시" loading="lazy"><figcaption>&lt;전시 공간 예시&gt;</figcaption></figure></li>
           </ul>
-        </section>
-
-        <section class="g-sec">
-          <h2>📍 방문 기업</h2>
-          <div class="visit">
-            <h3>Co11ab</h3>
-            <p><a href="https://www.google.com/maps/search/?api=1&query=11+Mandalay+Rd+Singapore+308232" target="_blank" rel="noopener">📍 11 Mandalay Rd, #16-01, Singapore 308232</a></p>
-            <h4>기관 소개</h4>
-            <p>NTU (난양공과대학), A*STAR (과학기술연구청), NHG (국립헬스케어그룹)가 공동 설립한 바이오메드테크 인큐베이터</p>
-            <ul>
-              <li><strong>싱가포르 최초</strong>로 헬스케어 구역 (HealthCity Novena)에 자리 잡은 <strong>스타트업 지원 허브</strong></li>
-              <li>연구와 상업화 간의 간극을 줄이고 <strong>혁신을 촉진</strong></li>
-              <li>병원, 연구기관, 산업계와의 <strong>오픈이노베이션 기반 공동연구 및 솔루션 상용화</strong> 추진</li>
-            </ul>
-            <h4>방문 내용</h4>
-            <ul>
-              <li>Co11ab 공간 투어</li>
-              <li>NHG (National Healthcare Group)의 <strong>싱가포르 헬스케어 시장 인사이트</strong> 브리핑</li>
-            </ul>
-            <h4>실증 예시</h4>
-            <ul>
-              <li><strong>AI 기반 환자 증상 예측 및 치료 의사결정 지원 시스템</strong> 개발</li>
-              <li>병원 내 <strong>데이터 연계형 맞춤형 치료 알고리즘</strong> 검증 및 임상 적용</li>
-              <li><strong>디지털 치료제 기반 건강관리 프로그램</strong> 공동 설계 및 배포</li>
-            </ul>
-          </div>
         </section>
 
         <p class="note">원문 및 사진: <a href="${C.links.guide}" target="_blank" rel="noopener">Notion 안내 페이지</a></p>
