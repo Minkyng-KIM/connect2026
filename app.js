@@ -89,7 +89,7 @@
       </section>
       <section class="wrap">
         <div class="tiles">
-          ${tiles.map(([h, t, d]) => `<a class="tile" href="${h}"><strong>${t}</strong><span>${d}</span></a>`).join("")}
+          ${tiles.map(([h, t, d]) => `<a class="tile${h === "#/my" ? " tile-login" : ""}" href="${h}"><strong>${t}</strong><span>${d}</span></a>`).join("")}
         </div>
       </section>`;
   }
