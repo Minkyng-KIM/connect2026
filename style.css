@@ -272,3 +272,12 @@ main { min-height: 70vh; padding-bottom: 96px; outline: none; }
 .daytabs a.shbc-tab span { color: #FFD1E6; }
 .daytabs a.shbc-tab:hover { background: #B8005C; }
 @media (max-width: 520px) { .daytabs a { padding: 10px 10px; } .daytabs a b { font-size: 15px; } .daytabs a span { font-size: 11px; } }
+.resp-count { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; font-size: 15px; }
+.resp-count b { color: var(--red); font-size: 20px; }
+.resp-count .btn { margin: 0 0 0 auto; }
+.tablewrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 8px; }
+table.resp { border-collapse: collapse; width: 100%; font-size: 13px; min-width: 760px; }
+table.resp th { position: sticky; top: 0; background: var(--ink); color: #fff; text-align: left; font-weight: 600; padding: 9px 10px; white-space: nowrap; }
+table.resp td { padding: 9px 10px; border-top: 1px solid var(--rule); vertical-align: top; }
+table.resp tr:nth-child(even) td { background: #FAFAF8; }
+table.resp td a { color: var(--ink); }

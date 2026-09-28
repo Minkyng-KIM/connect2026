@@ -45,31 +45,11 @@ window.CONFIG = {
      Apps Script 웹앱 배포 후 URL(https://script.google.com/macros/s/.../exec)을 넣으면
      실제 로그인으로 전환됩니다. 요청/응답 형식은 README.md 참고. */
   auth: {
-    appsScriptUrl: "",
+    appsScriptUrl: "https://script.google.com/macros/s/AKfycbyVthFy8gS0dw6LXBLoViwbjeHG0x8Gq0melZkwWmHn1A2lxMG6nT0s_Laf7HNLU4-F/exec",
     demoPassword: "demo2026", // 데모 모드 전용 — 실제 운영 전 반드시 Apps Script로 전환
   },
 
-  /* 기업별 링크 — 기업 ID마다 아래 칸을 채우세요.
-     responsesUrl(신청 현황 시트)은 공유 설정을 "제한됨"으로 두고 해당 기업 담당자에게만 공유하세요. 링크는 주소창 URL을 그대로 붙여넣으면 됩니다.
-     빈 값("")이면 해당 칸은 "아직 연결되지 않았습니다"로 표시됩니다.
-     (Apps Script 연결 후에는 이 값 대신 서버 응답이 사용됩니다.) */
-  demoPrivate: {
-    beyondmedicine: {
-      promoUrl:   "https://claude.ai/artifact/NEPu9hYPUtH8dYhZYNLmaw",
-      bookingUrl: "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0kevWQ4ptjVDvCvmj_ULiG5q9IHanGP_I0wQx7HkY8ztGPQH82tfdmWR-0N96IVglg0Z5PQqxu",
-      formUrl:    "https://forms.gle/jq9qFXXrzbCi6VHE9",
-      responsesUrl: "https://docs.google.com/spreadsheets/d/1CROxjxP0h3ZUvC4NnYGjgBlTZ1CuBknMflawqpxbp28/edit?usp=sharing",
-      photoFolder:"https://drive.google.com/drive/folders/1hoAxgEbA19pHYJ-hkzV_2NS6O6-tjg_8?usp=sharing",
-      linkedin: "",
-      whatsapp: "",
-      contactPerson: "",
-    },
-    speechnrt:      { promoUrl: "", bookingUrl: "", formUrl: "", responsesUrl: "", photoFolder: "", linkedin: "", whatsapp: "", contactPerson: "" },
-    lifefuturetech: { promoUrl: "", bookingUrl: "", formUrl: "", responsesUrl: "", photoFolder: "", linkedin: "", whatsapp: "", contactPerson: "" },
-    cdthera:        { promoUrl: "", bookingUrl: "https://calendar.app.google/fwRLcLNnuvLpx3V19", formUrl: "", responsesUrl: "https://docs.google.com/spreadsheets/d/17tUX_ci2c0hOz63QbkRfeCcNN0HhCjqK-HsC6fpLAl8/edit?usp=sharing", photoFolder: "https://drive.google.com/drive/folders/1Itz31kzw3wSksmmKKdMBV0g16WWJl102?usp=sharing", linkedin: "", whatsapp: "", contactPerson: "" },
-    careminder:     { promoUrl: "", bookingUrl: "https://calendar.app.google/ABXycQ2Lka1MFFtn9", formUrl: "", responsesUrl: "https://docs.google.com/spreadsheets/d/1Z1YOvQjYVmOtpfYPe03DC3DpuCqWik2I8X22mUdTBh0/edit?usp=sharing", photoFolder: "https://drive.google.com/drive/folders/1X3vhaW9kHIEsttRYX2wbBL3kqMw6YsL3?usp=sharing", linkedin: "", whatsapp: "", contactPerson: "" },
-    jeongjin:       { promoUrl: "", bookingUrl: "https://calendar.app.google/QNb2hBfaxxh8ARUa6", formUrl: "", responsesUrl: "https://docs.google.com/spreadsheets/d/1ikAwHJR3bFyO0_ZYZkZK0dz_aERvMwk4V14zOinbTvc/edit?usp=sharing", photoFolder: "https://drive.google.com/drive/folders/1YuZPB8ZqGRu1V7ELwhxzzxUTuL3q0t6Q?usp=sharing", linkedin: "", whatsapp: "", contactPerson: "" },
-    inexoplat:      { promoUrl: "", bookingUrl: "https://calendar.app.google/UjGfYCcMcfpmciTAA", formUrl: "", responsesUrl: "https://docs.google.com/spreadsheets/d/1YOHtMVi6CioUzSElyigZ3gxZCTVNtLPpH7hGA6RxesY/edit?usp=sharing", photoFolder: "https://drive.google.com/drive/folders/1nGBkvW0yKNKfEFuPMFSSRXdisI00L1DT?usp=sharing", linkedin: "", whatsapp: "", contactPerson: "" },
-    imitarscience:  { promoUrl: "", bookingUrl: "https://calendar.app.google/zVNDd3SdVKdZTKJM9", formUrl: "", responsesUrl: "https://docs.google.com/spreadsheets/d/1CBZSYE2TZe_qw0zGrx7YcJJeN3Da-6qG1fBL4PDXqFs/edit?usp=sharing", photoFolder: "https://drive.google.com/drive/folders/1Zhf4RC9Gjub76kOpSU5F9XYFWuLfzrpn?usp=sharing", linkedin: "", whatsapp: "", contactPerson: "" },
-  },
+  /* 기업별 링크·비밀번호는 이제 구글 시트 "CONNECT2026 로그인 관리 (운영사 전용)"에서 관리합니다.
+     (Apps Script 연결 완료 — 이 파일에는 비공개 정보를 넣지 마세요.) */
+  demoPrivate: {},
 };

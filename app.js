@@ -368,10 +368,18 @@
            <button class="btn ghost sm" type="button" data-copy="${esc(d.formUrl)}">링크 복사</button>`
         : empty("1:1 파트너링 신청서가 아직 연결되지 않았습니다.")}`;
 
-    const responses = d.responsesUrl
-      ? `<a class="linkcard in" href="${esc(d.responsesUrl)}" target="_blank" rel="noopener"><strong>신청 현황 시트 열기</strong><span>1:1 파트너링을 신청한 방문객의 이름, 소속, 연락처, 관심 협력 분야를 확인할 수 있습니다.</span><em>Google 스프레드시트에서 보기</em></a>
-         <p class="note">방문객 개인정보가 담긴 시트라 공유받은 구글 계정으로만 열립니다. 열리지 않으면 운영사에 권한을 요청하세요.</p>`
-      : empty("신청 현황 시트가 아직 연결되지 않았습니다.");
+    const R = d.responses;
+    const responses = R && R.error
+      ? `<p class="err">${esc(R.error)}</p>`
+      : R
+      ? (R.count
+          ? `<p class="resp-count"><b>${R.count}</b>건의 신청이 있습니다. <button class="btn ghost sm" type="button" id="reloadResp">새로고침</button></p>
+             <div class="tablewrap"><table class="resp"><thead><tr>${R.headers.map((h) => `<th>${esc(h === "타임스탬프" ? "신청일시" : h)}</th>`).join("")}</tr></thead>
+             <tbody>${R.rows.map((r) => `<tr>${r.map((c, k) => `<td>${/mail/i.test(R.headers[k]) && c ? `<a href="mailto:${esc(c)}">${esc(c)}</a>` : esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`
+          : empty("아직 접수된 1:1 파트너링 신청이 없습니다. 신청이 들어오면 이곳에 바로 표시됩니다."))
+      : d.responsesUrl
+      ? `<a class="linkcard in" href="${esc(d.responsesUrl)}" target="_blank" rel="noopener"><strong>신청 현황 시트 열기</strong><span>1:1 파트너링을 신청한 방문객 목록</span><em>Google 스프레드시트에서 보기</em></a>`
+      : empty("신청 현황이 아직 연결되지 않았습니다.");
 
     const photos = folderId
       ? `<div class="embed tall"><iframe title="기업 사진" loading="lazy" src="https://drive.google.com/embeddedfolderview?id=${encodeURIComponent(folderId)}#grid"></iframe></div>
@@ -392,6 +400,8 @@
       <section class="panel"><h2>홍보페이지</h2>${promo}</section>
       <section class="panel"><h2>LinkedIn · WhatsApp</h2>${social}</section>
       <section class="panel wide"><h2>기업 사진</h2>${photos}</section>`;
+    const rb = document.getElementById("reloadResp");
+    if (rb) rb.addEventListener("click", () => { box.innerHTML = '<p class="loading">불러오는 중…</p>'; loadPrivate(); });
   }
 
   function notFound() {
