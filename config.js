@@ -25,18 +25,20 @@ window.CONFIG = {
      빈 값("")이면 해당 버튼이 숨겨집니다. */
   contacts: [
     {
-      name: "TBZ Partners 현장 운영 데스크",
-      role: "현장 총괄 · 부스/패스/일정 문의",
-      phone: "+82 10-0000-0000",
-      whatsapp: "821000000000",
-      kakao: "https://open.kakao.com/o/XXXXXXX",
+      name: "유지현 본부장",
+      role: "글로벌 본부",
+      phone: "+82 10-7349-3398",
+      whatsapp: "821073493398",
+      kakao: "",
+      kakaoPhone: "010-7349-3398", // 카카오톡은 전화번호로 바로 대화를 여는 링크가 없어 번호 복사로 연결
     },
     {
-      name: "Pitchstop 담당",
-      role: "피칭 순서 · AV 체크 · 리허설",
-      phone: "+65 9000-0000",
-      whatsapp: "6590000000",
+      name: "김민경 팀장",
+      role: "TBZ Partners",
+      phone: "+82 10-8903-2563",
+      whatsapp: "821089032563",
       kakao: "",
+      kakaoPhone: "010-8903-2563",
     },
   ],
 
