@@ -75,7 +75,7 @@
       ["#/companies", "기업 브로슈어", `참여 스타트업 ${CO.length}개사`],
       ["#/shbc", "SHBC 일정", "Singapore Health & Biomedical Congress"],
       ["#/contact", "운영사 연락", "WhatsApp · 카카오톡 · 전화"],
-      ["#/my", "우리 기업 공간", "미팅현황 · 사진 · 홍보페이지 (로그인)"],
+      ["#/my", "스타트업 정보 (로그인)", "미팅현황 · 사진 · 홍보페이지"],
     ];
 
     return `
@@ -183,7 +183,7 @@
           <p>${c.website ? `<a href="${esc(c.website)}" target="_blank" rel="noopener">${esc(c.website)}</a>` : TBC}<br>
           ${c.email ? `<a href="mailto:${esc(c.email)}">${esc(c.email)}</a>` : ""} ${c.contactPerson ? esc(c.contactPerson) : ""}</p>
         </section>
-        ${mine ? `<a class="btn" href="#/my">우리 기업 공간 열기</a>` : ""}
+        ${mine ? `<a class="btn" href="#/my">스타트업 정보 열기</a>` : ""}
         <nav class="pager">
           ${prev ? `<a href="#/company/${prev.id}"><span>이전</span>${esc(prev.name)}</a>` : "<span></span>"}
           ${next ? `<a class="r" href="#/company/${next.id}"><span>다음</span>${esc(next.name)}</a>` : "<span></span>"}
@@ -271,7 +271,7 @@
     const s = Auth.session();
     if (!s) {
       return `<section class="wrap page narrow">
-        <h1 class="page-title">우리 기업 공간</h1>
+        <h1 class="page-title">스타트업 정보</h1>
         <p class="lede">로그인하면 우리 기업의 미팅 일정, 현장 사진, 홍보페이지, 연락 정보를 한곳에서 볼 수 있습니다.</p>
         <a class="btn" href="#/login">로그인</a></section>`;
     }
@@ -280,7 +280,7 @@
     return `
       <section class="wrap page">
         <div class="my-head">
-          <div><p class="bro-no">우리 기업 공간</p><h1 class="page-title">${esc(c.name)}</h1></div>
+          <div><p class="bro-no">스타트업 정보</p><h1 class="page-title">${esc(c.name)}</h1></div>
           <button class="btn ghost sm" id="logoutBtn" type="button">로그아웃</button>
         </div>
         <div id="myBody" class="my-grid"><p class="loading">불러오는 중…</p></div>
