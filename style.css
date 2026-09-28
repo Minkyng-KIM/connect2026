@@ -281,3 +281,4 @@ table.resp th { position: sticky; top: 0; background: var(--ink); color: #fff; t
 table.resp td { padding: 9px 10px; border-top: 1px solid var(--rule); vertical-align: top; }
 table.resp tr:nth-child(even) td { background: #FAFAF8; }
 table.resp td a { color: var(--ink); }
+.panel-sub { font-size: 14px; margin: 22px 0 10px; padding-top: 16px; border-top: 1px solid var(--rule); }

@@ -354,7 +354,7 @@
     const folderId = ((d.photoFolder || "").match(/folders\/([\w-]+)/) || [])[1] || d.driveFolderId || "";
     const bookingSrc = d.bookingUrl ? d.bookingUrl + (d.bookingUrl.includes("?") ? "&" : "?") + "gv=true" : "";
 
-    const partnering = `
+    const calendar = `
       ${d.bookingUrl && !d.bookingUrl.includes("/appointments/schedules/")
         ? `<a class="linkcard in" href="${esc(d.bookingUrl)}" target="_blank" rel="noopener"><strong>1:1 파트너링 캘린더</strong><span>예약 가능한 미팅 시간을 확인하고 예약하는 페이지</span><em>캘린더 열기</em></a>
            <div class="btnrow"><button class="btn ghost sm" type="button" data-copy="${esc(d.bookingUrl)}">링크 복사</button></div>`
@@ -362,7 +362,9 @@
         ? `<div class="embed tall"><iframe title="1:1 파트너링 캘린더" loading="lazy" src="${esc(bookingSrc)}"></iframe></div>
            <div class="btnrow"><a class="btn ghost sm" href="${esc(d.bookingUrl)}" target="_blank" rel="noopener">캘린더 새 창에서 열기</a>
            <button class="btn ghost sm" type="button" data-copy="${esc(d.bookingUrl)}">링크 복사</button></div>`
-        : empty("1:1 파트너링 캘린더가 아직 연결되지 않았습니다.")}
+        : empty("1:1 파트너링 캘린더가 아직 연결되지 않았습니다.")}`;
+
+    const form = `
       ${d.formUrl
         ? `<a class="linkcard in" href="${esc(d.formUrl)}" target="_blank" rel="noopener"><strong>1:1 파트너링 신청</strong><span>미팅을 원하는 파트너가 작성하는 신청서</span><em>신청서 열기</em></a>
            <button class="btn ghost sm" type="button" data-copy="${esc(d.formUrl)}">링크 복사</button>`
@@ -395,8 +397,8 @@
       </dl>`;
 
     box.innerHTML = `
-      <section class="panel"><h2>1:1 파트너링 신청 현황</h2>${responses}</section>
-      <section class="panel"><h2>1:1 파트너링</h2>${partnering}</section>
+      <section class="panel wide"><h2>1:1 파트너링 캘린더</h2>${calendar}</section>
+      <section class="panel wide"><h2>1:1 파트너링 신청 · 신청 현황</h2>${form}<h3 class="panel-sub">신청 현황</h3>${responses}</section>
       <section class="panel"><h2>홍보페이지</h2>${promo}</section>
       <section class="panel"><h2>LinkedIn · WhatsApp</h2>${social}</section>
       <section class="panel wide"><h2>기업 사진</h2>${photos}</section>`;
