@@ -5,12 +5,13 @@
  * [확장 프로그램 → Apps Script]로 열어 붙여넣습니다.
  *
  * 관리 시트 첫 번째 탭의 1행(헤더) 순서:
- *   id | name | password | responsesSheet | promoUrl | bookingUrl | formUrl | photoFolder | linkedin | whatsapp | contactPerson
+ *   id | name | password | responsesSheet | promoUrl | bookingUrl | formUrl | photoFolder | linkedin | whatsapp | contactPerson | representative
+ *   (representative 열이 없으면 기업이 처음 저장할 때 자동으로 추가됩니다)
  *
  * 사이트 → 스크립트 요청 (POST, JSON 문자열):
  *   { action: "login",   id, password } → { ok, token, company:{id,name} }
  *   { action: "private", token }        → { ok, data:{ ...링크들, responses:{headers, rows, count} } }
- *   { action: "update",  token, fields:{linkedin, whatsapp, contactPerson} } → { ok, data:{...} }
+ *   { action: "update",  token, fields:{linkedin, whatsapp, representative, contactPerson} } → { ok, data:{...} }
  */
 
 const SESSION_HOURS = 6;          // 로그인 유지 시간 (최대 6시간)
@@ -74,6 +75,7 @@ function privateData_(token) {
       photoFolder: row.photoFolder || "",
       linkedin: row.linkedin || "",
       whatsapp: row.whatsapp || "",
+      representative: row.representative || "",
       contactPerson: row.contactPerson || "",
       responses: readResponses_(row.responsesSheet),
     },
@@ -106,6 +108,7 @@ function readResponses_(url) {
 const EDITABLE = {
   linkedin: (v) => v === "" || /^https:\/\/([a-z]{2,3}\.)?(www\.)?linkedin\.com\//i.test(v) ? "" : "LinkedIn 주소는 https://www.linkedin.com/ 으로 시작해야 합니다.",
   whatsapp: (v) => v === "" || /^\d{8,15}$/.test(v) ? "" : "WhatsApp 번호는 국가번호 포함 숫자 8~15자리로 입력하세요. (예: 821012345678)",
+  representative: (v) => v.length <= 80 ? "" : "대표는 80자 이내로 입력하세요.",
   contactPerson: (v) => v.length <= 80 ? "" : "담당자는 80자 이내로 입력하세요.",
 };
 
@@ -133,8 +136,13 @@ function updateProfile_(token, fields) {
     const r = values.findIndex((row, i) => i > 0 && String(row[head.indexOf("id")]).trim().toLowerCase() === id);
     if (r < 1) return { ok: false, error: "기업 정보를 찾을 수 없습니다." };
     for (const key in clean) {
-      const c = head.indexOf(key);
-      if (c >= 0) sheet.getRange(r + 1, c + 1).setValue(clean[key]);
+      let c = head.indexOf(key);
+      if (c < 0) { // 열이 없으면 맨 오른쪽에 새로 만듦
+        c = head.length;
+        sheet.getRange(1, c + 1).setValue(key);
+        head.push(key);
+      }
+      sheet.getRange(r + 1, c + 1).setValue(clean[key]);
     }
     SpreadsheetApp.flush();
   } finally {

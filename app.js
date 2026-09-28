@@ -393,13 +393,15 @@
     const social = `<dl class="facts compact" id="socialView">
         <div><dt>LinkedIn</dt><dd>${d.linkedin ? `<a href="${esc(d.linkedin)}" target="_blank" rel="noopener">${esc(d.linkedin.replace(/^https?:\/\/(www\.)?/, ""))}</a>` : TBC}</dd></div>
         <div><dt>WhatsApp</dt><dd>${d.whatsapp ? `<a href="https://wa.me/${digits(d.whatsapp)}" target="_blank" rel="noopener">+${digits(d.whatsapp)}</a>` : TBC}</dd></div>
+        <div><dt>대표</dt><dd>${val(d.representative)}</dd></div>
         <div><dt>담당자</dt><dd>${val(d.contactPerson)}</dd></div>
-        <div><dt>Pitchstop (피칭시간)</dt><dd>${c.pitch ? `10월 8일 ${c.pitch}<span class="pitch-note">*꼭 10분 전 대기해주세요</span>` : TBC}</dd></div>
+        <div class="full"><dt>Pitchstop (피칭시간)</dt><dd>${c.pitch ? `10월 8일 ${c.pitch}<span class="pitch-note">*꼭 10분 전 대기해주세요</span>` : TBC}</dd></div>
       </dl>
       ${Auth.isDemo() ? "" : `<button class="btn ghost sm" type="button" id="editSocial">정보 입력·수정</button>
       <form class="form compact-form" id="socialForm" hidden novalidate>
         <label>LinkedIn 주소<input name="linkedin" type="url" inputmode="url" placeholder="https://www.linkedin.com/company/..." value="${esc(d.linkedin || "")}"></label>
         <label>WhatsApp 번호<input name="whatsapp" inputmode="tel" placeholder="국가번호 포함 숫자 (예: 821012345678)" value="${esc(d.whatsapp || "")}"></label>
+        <label>대표 이름 / 직함<input name="representative" maxlength="80" placeholder="예: Jihoon Park / CEO" value="${esc(d.representative || "")}"></label>
         <label>담당자 이름 / 직함<input name="contactPerson" maxlength="80" placeholder="예: Minji Kim / BD Manager" value="${esc(d.contactPerson || "")}"></label>
         <p class="err" id="socialErr" role="alert"></p>
         <div class="btnrow"><button class="btn sm" type="submit">저장</button><button class="btn ghost sm" type="button" id="cancelSocial">취소</button></div>
@@ -409,7 +411,7 @@
       <section class="panel wide"><h2>1:1 파트너링 캘린더</h2>${calendar}</section>
       <section class="panel wide"><h2>1:1 파트너링 신청 · 신청 현황</h2>${form}<h3 class="panel-sub">신청 현황</h3>${responses}</section>
       <section class="panel"><h2>홍보페이지</h2>${promo}</section>
-      <section class="panel"><h2>LinkedIn · WhatsApp · 담당자</h2>${social}</section>
+      <section class="panel"><h2>LinkedIn · WhatsApp · 대표 · 담당자</h2>${social}</section>
       <section class="panel wide"><h2>기업 사진</h2>${photos}</section>`;
     const sf = document.getElementById("socialForm"), eb = document.getElementById("editSocial");
     if (sf && eb) {
@@ -424,6 +426,7 @@
           await Auth.update({
             linkedin: sf.elements.namedItem("linkedin").value,
             whatsapp: sf.elements.namedItem("whatsapp").value,
+            representative: sf.elements.namedItem("representative").value,
             contactPerson: sf.elements.namedItem("contactPerson").value,
           });
           box.innerHTML = '<p class="loading">저장됨 · 다시 불러오는 중…</p>'; loadPrivate();

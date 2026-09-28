@@ -287,3 +287,5 @@ table.resp td a { color: var(--ink); }
 [hidden] { display: none !important; }
 button.cbtn { font: inherit; font-weight: 700; font-size: 15px; border: 0; cursor: pointer; }
 .pitch-note { display: block; margin-top: 4px; font-size: 13px; font-weight: 600; color: #8B5A2B; }
+.facts.compact { grid-template-columns: 1fr 1fr; }
+.facts.compact > div.full { grid-column: 1 / -1; }
