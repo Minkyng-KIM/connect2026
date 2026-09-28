@@ -98,7 +98,7 @@ main { min-height: 70vh; padding-bottom: 96px; outline: none; }
 .back::before { content: "‹ "; }
 
 /* ---------- schedule ---------- */
-.daytabs { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--ink); margin-bottom: 24px; }
+.daytabs { display: grid; grid-template-columns: 1fr 1fr 1fr; border: 1px solid var(--ink); margin-bottom: 24px; }
 .daytabs a { padding: 12px 16px; text-decoration: none; display: flex; flex-direction: column; }
 .daytabs a b { font-size: 18px; }
 .daytabs a span { font-size: 13px; color: var(--mute); }
@@ -267,3 +267,8 @@ main { min-height: 70vh; padding-bottom: 96px; outline: none; }
 .g-photo { margin: 12px 0 4px; }
 .g-photo img { display: block; width: 100%; height: auto; border-radius: 8px; }
 .g-photo figcaption { text-align: center; font-size: 13px; color: var(--mute); margin-top: 6px; }
+
+.daytabs a.shbc-tab { background: #D6006B; color: #fff; }
+.daytabs a.shbc-tab span { color: #FFD1E6; }
+.daytabs a.shbc-tab:hover { background: #B8005C; }
+@media (max-width: 520px) { .daytabs a { padding: 10px 10px; } .daytabs a b { font-size: 15px; } .daytabs a span { font-size: 11px; } }

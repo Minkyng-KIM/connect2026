@@ -129,6 +129,7 @@
         <p class="lede">참여 스타트업을 위한 추천 세션과 현장 안내입니다. 시간은 모두 싱가포르 시간(SGT)입니다.</p>
         <div class="daytabs" role="tablist">
           ${DAYS.map((d) => `<a role="tab" aria-selected="${d === day}" href="#/schedule/${d.slice(-2)}" class="${d === day ? "on" : ""}"><b>${S[d].label}</b><span>${S[d].ko}</span></a>`).join("")}
+          <a class="shbc-tab" href="${C.links.shbcProgramme}" target="_blank" rel="noopener"><b>SHBC 전체일정</b><span>shbc.com.sg ↗</span></a>
         </div>
         <ol class="timeline">${S[day].slots.map((s) => slotHTML(s, day, n)).join("")}</ol>
         <p class="note">전체 프로그램: <a href="${C.links.shbcProgramme}" target="_blank" rel="noopener">shbc.com.sg/programme</a></p>
