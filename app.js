@@ -254,7 +254,6 @@
           </ul>
         </section>
 
-        <p class="note">원문 및 사진: <a href="${C.links.guide}" target="_blank" rel="noopener">Notion 안내 페이지</a></p>
       </article>`;
   }
 
