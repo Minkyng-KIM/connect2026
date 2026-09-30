@@ -119,7 +119,7 @@
     return `<div class="venue">
       <div class="venue-txt">
         <p class="venue-k">📍 장소</p>
-        <p class="venue-v">@ NHG Health Exhibition which is located in the middle of Hall 2A.</p>
+        <p class="venue-v">@ NHG Health Exhibition (middle of Hall 2A)</p>
         <p class="venue-ko">Singapore Expo Hall 2A 중앙, NHG Health 전시 구역</p>
         <a class="btn sm" href="https://maps.app.goo.gl/vUXmh6G5pCGk4Nby8" target="_blank" rel="noopener">Google 지도에서 열기</a>
       </div>
@@ -253,7 +253,7 @@
               <div class="venue ov">
                 <div class="venue-txt">
                   <p class="venue-k">📍 전시·피칭 장소</p>
-                  <p class="venue-v">@ NHG Health Exhibition which is located in the middle of Hall 2A.</p>
+                  <p class="venue-v">@ NHG Health Exhibition (middle of Hall 2A)</p>
                   <p class="venue-ko">Singapore Expo Hall 2A 중앙, NHG Health 전시 구역</p>
                   <a class="btn sm" href="https://maps.app.goo.gl/vUXmh6G5pCGk4Nby8" target="_blank" rel="noopener">Google 지도에서 열기</a>
                 </div>
