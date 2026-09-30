@@ -5,6 +5,11 @@
   const $app = document.getElementById("app");
   const C = window.CONFIG, S = window.SCHEDULE, CO = window.COMPANIES;
   const DAYS = C.event.days;
+  // 로그인 ID(관리 시트 A열)로 기업 찾기 — id 또는 aliases 와 비교 (대소문자 무관)
+  const findCo = (key) => {
+    key = String(key || "").trim().toLowerCase();
+    return CO.find((c) => c.id === key || (c.aliases || []).includes(key)) || null;
+  };
 
   /* ---------- helpers ---------- */
   const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
@@ -156,7 +161,7 @@
     const c = CO.find((x) => x.id === id);
     if (!c) return notFound();
     const s = Auth.session();
-    const mine = s && s.company.id === c.id;
+    const mine = s && findCo(s.company.id) === c;
     const i = CO.indexOf(c), prev = CO[i - 1], next = CO[i + 1];
     return `
       <article class="wrap page brochure">
@@ -324,7 +329,7 @@
         <p class="lede">로그인하면 우리 기업의 미팅 일정, 현장 사진, 홍보페이지, 연락 정보를 한곳에서 볼 수 있습니다.</p>
         <a class="btn" href="#/login">로그인</a></section>`;
     }
-    const c = CO.find((x) => x.id === s.company.id) || { name: s.company.name, id: s.company.id };
+    const c = findCo(s.company.id) || { name: s.company.name, id: s.company.id };
     setTimeout(loadPrivate, 0);
     return `
       <section class="wrap page">
@@ -343,7 +348,7 @@
     try { d = await Auth.getPrivate(); }
     catch (e) { box.innerHTML = `<p class="err">${esc(e.message)}</p>`; return; }
     const s = Auth.session();
-    const c = CO.find((x) => x.id === s.company.id) || {};
+    const c = findCo(s.company.id) || {};
     const empty = (what) => `<p class="empty">${what}</p>`;
 
     const promo = d.promoUrl
@@ -369,6 +374,22 @@
         ? `<a class="linkcard in" href="${esc(d.formUrl)}" target="_blank" rel="noopener"><strong>1:1 파트너링 신청</strong><span>미팅을 원하는 파트너가 작성하는 신청서</span><em>신청서 열기</em></a>
            <button class="btn ghost sm" type="button" data-copy="${esc(d.formUrl)}">링크 복사</button>`
         : empty("1:1 파트너링 신청서가 아직 연결되지 않았습니다.")}`;
+
+    const M = d.meetings;
+    const meetings = M && M.error
+      ? `<p class="err">${esc(M.error)}</p>`
+      : Array.isArray(M) && M.length
+      ? `<p class="resp-count"><b>${M.length}</b>건의 미팅이 확정되었습니다. <span class="small">(싱가포르 시간)</span></p>
+         <ol class="meetings">${M.map((m) => `<li>
+           <div class="m-when"><b>${esc(m.date)}</b><span>${esc(m.time)}</span></div>
+           <div class="m-body"><strong>${esc(m.title)}</strong>
+             ${m.guests && m.guests.length ? `<span>참석자: ${m.guests.map((g) => `<a href="mailto:${esc(g)}">${esc(g)}</a>`).join(", ")}</span>` : ""}
+             ${m.location ? `<span>장소: ${esc(m.location)}</span>` : ""}
+             ${m.meet ? `<a class="m-meet" href="${esc(m.meet)}" target="_blank" rel="noopener">Google Meet 참여</a>` : ""}
+           </div></li>`).join("")}</ol>`
+      : Array.isArray(M)
+      ? empty("아직 확정된 미팅이 없습니다. 파트너가 캘린더에서 예약하면 이곳에 표시됩니다.")
+      : "";
 
     const R = d.responses;
     const responses = R && R.error
@@ -409,6 +430,7 @@
       </form>`}`;
 
     box.innerHTML = `
+      ${meetings ? `<section class="panel wide"><h2>확정된 미팅</h2>${meetings}</section>` : ""}
       <section class="panel wide"><h2>1:1 파트너링 캘린더</h2>${calendar}</section>
       <section class="panel wide"><h2>1:1 파트너링 신청 · 신청 현황</h2>${form}<h3 class="panel-sub">신청 현황</h3>${responses}</section>
       <section class="panel"><h2>홍보페이지</h2>${promo}</section>
@@ -458,7 +480,7 @@
     document.querySelectorAll("[data-nav]").forEach((el) => el.classList.toggle("on", el.dataset.nav === key));
     const s = Auth.session();
     const chip = document.getElementById("loginChip");
-    chip.textContent = s ? s.company.name.split(/\s|,/)[0] : "로그인";
+    chip.textContent = s ? ((findCo(s.company.id) || s.company).name).split(/\s|,/)[0] : "로그인";
     chip.href = s ? "#/my" : "#/login";
     if (keepScroll !== true) window.scrollTo(0, 0);
     bind();
