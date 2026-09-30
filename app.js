@@ -116,7 +116,16 @@
   }
 
   function pitchList(day, n) {
-    return `<ol class="pitch">${CO.map((c) => {
+    return `<div class="venue">
+      <div class="venue-txt">
+        <p class="venue-k">📍 장소</p>
+        <p class="venue-v">@ NHG Health Exhibition which is located in the middle of Hall 2A.</p>
+        <p class="venue-ko">Singapore Expo Hall 2A 중앙, NHG Health 전시 구역</p>
+        <a class="btn sm" href="https://maps.app.goo.gl/vUXmh6G5pCGk4Nby8" target="_blank" rel="noopener">Google 지도에서 열기</a>
+      </div>
+      <div class="venue-map"><iframe title="Singapore Expo Hall 2 지도" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Singapore+Expo+Hall+2,+1+Expo+Dr,+Singapore+486150&z=16&output=embed"></iframe></div>
+    </div>
+    <ol class="pitch">${CO.map((c) => {
       const [h, m] = c.pitch.split(":").map(Number);
       const end = `${String(h + (m + 10 >= 60 ? 1 : 0)).padStart(2, "0")}:${String((m + 10) % 60).padStart(2, "0")}`;
       const on = n >= sgt(day, c.pitch) && n < sgt(day, end);
