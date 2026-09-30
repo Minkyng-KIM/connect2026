@@ -87,8 +87,8 @@
       <section class="hero">
         <div class="hero-ring" aria-hidden="true"></div>
         <div class="wrap">
-          <h1 class="hero-title">CONNECT<br><span>2026</span></h1>
-          <p class="hero-sub">Global Open Innovation Roadshow<br>at SHBC 2026 · Singapore Expo · 8–9 October</p>
+          <h1 class="hero-title"><img src="connect-title.png" alt="CONNECT 2026 — Global Open Innovation Roadshow" width="1200" height="261"></h1>
+          <p class="hero-sub">at SHBC 2026 · Singapore Expo · 8–9 October</p>
           ${live}
         </div>
       </section>
