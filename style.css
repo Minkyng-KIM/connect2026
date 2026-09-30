@@ -312,3 +312,5 @@ button.cbtn { font: inherit; font-weight: 700; font-size: 15px; border: 0; curso
 .venue-ko { font-size: 13px; color: var(--mute); margin: 4px 0 10px !important; }
 .venue-map { min-height: 180px; border-radius: 6px; overflow: hidden; border: 1px solid var(--rule); }
 .venue-map iframe { width: 100%; height: 100%; min-height: 180px; border: 0; display: block; }
+.venue.ov { margin-top: 12px; border: 1px solid var(--rule); }
+.venue a.btn { color: #fff; text-decoration: none; }

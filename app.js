@@ -249,7 +249,16 @@
             <div><dt>프로그램명</dt><dd>Singapore Health & Biomedical Congress (SHBC) 2026 - Research & Innovation</dd></div>
             <div><dt>목적</dt><dd>SHBC 참가자들을 대상으로 스타트업의 역량 및 솔루션을 홍보할 수 있는 기회 제공</dd></div>
             <div><dt>일정</dt><dd>2026년 10월 8일(목) ~ 10월 9일(금)</dd></div>
-            <div><dt>장소</dt><dd>Singapore Expo<br><a href="https://www.google.com/maps/search/?api=1&query=1+Expo+Dr+Singapore+486150" target="_blank" rel="noopener">📍 1 Expo Dr, Singapore 486150</a></dd></div>
+            <div><dt>장소</dt><dd>Singapore Expo<br><a href="https://www.google.com/maps/search/?api=1&query=1+Expo+Dr+Singapore+486150" target="_blank" rel="noopener">📍 1 Expo Dr, Singapore 486150</a>
+              <div class="venue ov">
+                <div class="venue-txt">
+                  <p class="venue-k">📍 전시·피칭 장소</p>
+                  <p class="venue-v">@ NHG Health Exhibition which is located in the middle of Hall 2A.</p>
+                  <p class="venue-ko">Singapore Expo Hall 2A 중앙, NHG Health 전시 구역</p>
+                  <a class="btn sm" href="https://maps.app.goo.gl/vUXmh6G5pCGk4Nby8" target="_blank" rel="noopener">Google 지도에서 열기</a>
+                </div>
+                <div class="venue-map"><iframe title="Singapore Expo Hall 2 지도" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Singapore+Expo+Hall+2,+1+Expo+Dr,+Singapore+486150&z=16&output=embed"></iframe></div>
+              </div></dd></div>
             <div><dt>참가 대상</dt><dd>헬스&바이오메디컬 스타트업 8개사</dd></div>
           </dl>
         </section>
