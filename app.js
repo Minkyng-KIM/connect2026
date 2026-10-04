@@ -14,6 +14,8 @@
   /* ---------- helpers ---------- */
   const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
   const TBC = '<span class="tbc">업데이트 예정</span>';
+  // 문자열이면 문단, 배열이면 글머리 목록으로 표시
+  const broBody = (v) => (Array.isArray(v) && v.length ? `<ul class="bro-list">${v.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : `<p>${val(Array.isArray(v) ? null : v)}</p>`);
   const val = (v) => (v ? esc(v) : TBC);
   const initials = (n) => n.replace(/(Co\.|Ltd\.|Inc\.|,)/g, "").trim().split(/\s+/).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
   const digits = (s) => String(s || "").replace(/[^\d]/g, "");
@@ -87,7 +89,7 @@
       <section class="hero">
         <div class="hero-ring" aria-hidden="true"></div>
         <div class="wrap">
-          <h1 class="hero-title"><img src="connect-title.png" alt="CONNECT 2026 — Global Open Innovation Roadshow" width="1200" height="261"></h1>
+          <h1 class="hero-title"><img src="connect-title.png?v=20261004" alt="CONNECT 2026 — Global Open Innovation Roadshow" width="1200" height="251"></h1>
           <p class="hero-sub">at SHBC 2026 · Singapore Expo · 8–9 October</p>
           ${live}
         </div>
@@ -192,8 +194,8 @@
         </dl>
         <div class="photo-ph" aria-label="Product / team photo placeholder">Product / team photo</div>
         <section class="bro-sec"><h2>Core Business</h2><p>${c.core ? esc(c.core) : esc(c.summary)}</p></section>
-        <section class="bro-sec"><h2>Key Achievements</h2><p>${val(c.achievements)}</p></section>
-        <section class="bro-sec"><h2>Global Expansion Focus</h2><p>${val(c.expansion)}</p></section>
+        <section class="bro-sec"><h2>Key Achievements</h2>${broBody(c.achievements)}</section>
+        <section class="bro-sec"><h2>Global Expansion Focus</h2>${broBody(c.expansion)}</section>
         <section class="bro-sec"><h2>Contact</h2>
           <p>${c.website ? `<a href="${esc(c.website)}" target="_blank" rel="noopener">${esc(c.website)}</a>` : TBC}<br>
           ${c.email ? `<a href="mailto:${esc(c.email)}">${esc(c.email)}</a>` : ""} ${c.contactPerson ? esc(c.contactPerson) : ""}</p>
