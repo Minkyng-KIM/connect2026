@@ -80,7 +80,7 @@
       ["#/shbc", "SHBC 전체일정", "Singapore Health & Biomedical Congress"],
       ["#/companies", "기업 홍보자료", `참여 스타트업 ${CO.length}개사 브로슈어`],
       ["#/contact", "운영사 연락", "WhatsApp · 카카오톡 · 전화"],
-      ["#/my", "스타트업 (로그인)", "파트너링 캘린더 · 신청 현황 · 사진 · 홍보페이지"],
+      ["#/my", "스타트업 (로그인)", "신청 현황 · 미팅 명단 · 사진 · 홍보페이지"],
     ];
 
     return `
@@ -344,7 +344,7 @@
     if (!s) {
       return `<section class="wrap page narrow">
         <h1 class="page-title">스타트업 (로그인)</h1>
-        <p class="lede">로그인하면 우리 기업의 미팅 일정, 현장 사진, 홍보페이지, 연락 정보를 한곳에서 볼 수 있습니다.</p>
+        <p class="lede">로그인하면 우리 기업의 1:1 파트너링 신청 현황, 미팅 일정·명단, 현장 사진, 홍보페이지, 연락 정보를 한곳에서 볼 수 있습니다.</p>
         <a class="btn" href="#/login">로그인</a></section>`;
     }
     const c = findCo(s.company.id) || { name: s.company.name, id: s.company.id };
@@ -447,10 +447,30 @@
         <div class="btnrow"><button class="btn sm" type="submit">저장</button><button class="btn ghost sm" type="button" id="cancelSocial">취소</button></div>
       </form>`}`;
 
+
+    /* ---- 1:1 파트너링 미팅 명단 (기업이 직접 입력 · Apps Script 관리 시트의 roster 칸에 JSON으로 저장) ---- */
+    const PLACES = ["온라인", "행사장 내 현장 미팅", "오프라인", "기타"];
+    let rosterRows = [];
+    try { const p = JSON.parse(d.roster || "[]"); if (Array.isArray(p)) rosterRows = p; } catch (e) { rosterRows = []; }
+    if (!rosterRows.length) rosterRows = [{}];
+    const rosterRow = (r) => `<tr>
+      <td data-label="이름"><input data-f="name" maxlength="80" placeholder="예: John Tan" value="${esc(r.name || "")}"></td>
+      <td data-label="소속"><input data-f="org" maxlength="120" placeholder="예: Singapore General Hospital" value="${esc(r.org || "")}"></td>
+      <td data-label="직급"><input data-f="title" maxlength="80" placeholder="예: Director" value="${esc(r.title || "")}"></td>
+      <td data-label="미팅장소"><select data-f="place"><option value="">선택</option>${PLACES.map((p) => `<option value="${esc(p)}"${r.place === p ? " selected" : ""}>${esc(p)}</option>`).join("")}</select></td>
+      <td data-label="미팅 주요내용"><textarea data-f="notes" maxlength="500" rows="2" placeholder="미팅에서 논의할 내용을 적어주세요">${esc(r.notes || "")}</textarea></td>
+      <td class="del"><button class="btn ghost sm" type="button" data-del>삭제</button></td>
+    </tr>`;
+    const rosterPanel = `
+      <p class="note roster-note">미팅이 정해진 파트너를 직접 입력하고 <b>저장</b>을 눌러 주세요. 우리 기업 계정에만 보관됩니다.</p>
+      <div class="tablewrap roster-wrap"><table class="resp roster"><thead><tr><th>이름</th><th>소속</th><th>직급</th><th>미팅장소</th><th>미팅 주요내용</th><th></th></tr></thead>
+        <tbody id="rosterBody">${rosterRows.map(rosterRow).join("")}</tbody></table></div>
+      <div class="btnrow"><button class="btn ghost sm" type="button" id="addRoster">+ 행 추가</button><button class="btn sm" type="button" id="saveRoster">저장</button><span id="rosterMsg" class="roster-msg" role="status"></span></div>`;
+
     box.innerHTML = `
-      ${meetings ? `<section class="panel wide"><h2>확정된 미팅</h2>${meetings}</section>` : ""}
-      <section class="panel wide"><h2>1:1 파트너링 캘린더</h2>${calendar}</section>
       <section class="panel wide"><h2>1:1 파트너링 신청 · 신청 현황</h2>${form}<h3 class="panel-sub">신청 현황</h3>${responses}</section>
+      ${meetings ? `<section class="panel wide"><h2>확정된 미팅</h2>${meetings}</section>` : ""}
+      <section class="panel wide"><h2>1:1 파트너링 미팅 명단</h2>${rosterPanel}</section>
       <section class="panel"><h2>홍보페이지</h2>${promo}</section>
       <section class="panel"><h2>LinkedIn · WhatsApp · 대표 · 담당자</h2>${social}</section>
       <section class="panel wide"><h2>기업 사진</h2>${photos}</section>`;
@@ -473,6 +493,35 @@
           });
           box.innerHTML = '<p class="loading">저장됨 · 다시 불러오는 중…</p>'; loadPrivate();
         } catch (x) { err.textContent = x.message; btn.disabled = false; btn.textContent = "저장"; }
+      });
+    }
+    const rbody = document.getElementById("rosterBody");
+    if (rbody) {
+      const msg = document.getElementById("rosterMsg");
+      const say = (t, cls) => { msg.textContent = t; msg.className = "roster-msg" + (cls ? " " + cls : ""); };
+      document.getElementById("addRoster").addEventListener("click", () => {
+        if (rbody.rows.length >= 30) { say("최대 30명까지 입력할 수 있습니다.", "err"); return; }
+        rbody.insertAdjacentHTML("beforeend", rosterRow({}));
+      });
+      rbody.addEventListener("click", (ev) => {
+        const b = ev.target.closest("[data-del]");
+        if (!b) return;
+        b.closest("tr").remove();
+        if (!rbody.rows.length) rbody.insertAdjacentHTML("beforeend", rosterRow({}));
+      });
+      document.getElementById("saveRoster").addEventListener("click", async (ev) => {
+        const btn = ev.currentTarget;
+        const rows = [...rbody.rows]
+          .map((tr) => { const o = {}; tr.querySelectorAll("[data-f]").forEach((el) => { o[el.dataset.f] = el.value.trim(); }); return o; })
+          .filter((o) => Object.values(o).some((v) => v));
+        btn.disabled = true; say("저장 중…");
+        try {
+          const saved = await Auth.update({ roster: JSON.stringify(rows) });
+          // Apps Script 에 roster 기능이 아직 설치되지 않았다면 응답에 roster 가 없습니다 → 저장된 것처럼 보이지 않게 안내
+          if (typeof saved.roster !== "string") throw new Error("서버(Apps Script)에 미팅 명단 저장 기능이 아직 반영되지 않았습니다. 운영 담당자에게 문의하세요.");
+          say("저장되었습니다 · " + new Date().toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" }), "ok");
+        } catch (x) { say(x.message, "err"); }
+        btn.disabled = false;
       });
     }
     const rb = document.getElementById("reloadResp");

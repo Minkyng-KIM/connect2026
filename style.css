@@ -316,3 +316,30 @@ button.cbtn { font: inherit; font-weight: 700; font-size: 15px; border: 0; curso
 .venue a.btn { color: #fff; text-decoration: none; }
 .hero-title img { display: block; width: min(560px, 100%); height: auto; margin-left: -6px; }
 .hero-sub { border-top: 0; padding-top: 0; margin-top: 14px; }
+
+
+/* ===== 1:1 파트너링 미팅 명단 (기업 직접 입력) ===== */
+.roster-note { margin: 0 0 12px; }
+table.resp.roster { min-width: 880px; }
+table.roster td { padding: 6px; vertical-align: top; }
+table.roster th:nth-child(1) { width: 14%; } table.roster th:nth-child(2) { width: 20%; }
+table.roster th:nth-child(3) { width: 13%; } table.roster th:nth-child(4) { width: 15%; }
+table.roster th:nth-child(6) { width: 70px; }
+table.roster input, table.roster select, table.roster textarea { width: 100%; box-sizing: border-box; font: inherit; font-size: 13px; font-weight: 400; padding: 8px 9px; border: 1px solid #C2C2BC; border-radius: 6px; background: #fff; }
+table.roster textarea { resize: vertical; min-height: 40px; }
+table.roster input:focus, table.roster select:focus, table.roster textarea:focus { border-color: var(--ink); outline: none; box-shadow: 0 0 0 3px rgba(228,50,27,.2); }
+table.roster .btn { margin: 0; }
+.roster-msg { font-size: 13px; color: var(--mute); align-self: center; }
+.roster-msg.ok { color: #1B7F3B; font-weight: 600; }
+.roster-msg.err { color: var(--red); font-weight: 600; }
+@media (max-width: 819px) {
+  .tablewrap.roster-wrap { border: 0; overflow: visible; }
+  table.resp.roster { min-width: 0; }
+  table.roster, table.roster tbody { display: block; }
+  table.roster thead { display: none; }
+  table.roster tr { display: grid; gap: 10px; padding: 12px; margin-bottom: 10px; border: 1px solid var(--rule); border-radius: 10px; background: #fff; }
+  table.roster tr:nth-child(even) td { background: transparent; }
+  table.roster td { display: block; border: 0; padding: 0; }
+  table.roster td::before { content: attr(data-label); display: block; font-size: 12px; font-weight: 600; color: var(--mute); margin-bottom: 4px; }
+  table.roster td.del::before { content: none; }
+}
