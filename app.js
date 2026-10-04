@@ -14,8 +14,6 @@
   /* ---------- helpers ---------- */
   const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
   const TBC = '<span class="tbc">업데이트 예정</span>';
-  // 문자열이면 문단, 배열이면 글머리 목록으로 표시
-  const broBody = (v) => (Array.isArray(v) && v.length ? `<ul class="bro-list">${v.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : `<p>${val(Array.isArray(v) ? null : v)}</p>`);
   const val = (v) => (v ? esc(v) : TBC);
   const initials = (n) => n.replace(/(Co\.|Ltd\.|Inc\.|,)/g, "").trim().split(/\s+/).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
   const digits = (s) => String(s || "").replace(/[^\d]/g, "");
@@ -168,6 +166,32 @@
       </section>`;
   }
 
+  function pagesHTML(c) {
+    const ps = c.pages;
+    return `
+        <p class="bro-pitch">Pitchstop · 10.8 ${esc(c.pitch)} SGT</p>
+        <div class="bro-pages">${ps.map((src, i) => `<figure class="bro-page"><a href="${esc(src)}" target="_blank" rel="noopener" aria-label="${esc(c.name)} 브로슈어 ${i + 1}/${ps.length} 크게 보기"><img src="${esc(src)}" alt="${esc(c.name)} 브로슈어 ${i + 1}/${ps.length}" loading="lazy"></a></figure>`).join("")}</div>
+        <p class="note bro-hint">이미지를 누르면 원본 크기로 열려 확대해서 볼 수 있습니다.</p>`;
+  }
+
+  function legacyHTML(c) {
+    return `
+        <dl class="facts">
+          <div><dt>대표</dt><dd>${val(c.rep)}</dd></div>
+          <div><dt>설립</dt><dd>${val(c.founded)}</dd></div>
+          <div><dt>소재지</dt><dd>${val(c.location)}</dd></div>
+          <div><dt>Pitchstop</dt><dd>10.8 ${c.pitch} SGT</dd></div>
+        </dl>
+        <div class="photo-ph" aria-label="Product / team photo placeholder">Product / team photo</div>
+        <section class="bro-sec"><h2>Core Business</h2><p>${c.core ? esc(c.core) : esc(c.summary)}</p></section>
+        <section class="bro-sec"><h2>Key Achievements</h2><p>${val(c.achievements)}</p></section>
+        <section class="bro-sec"><h2>Global Expansion Focus</h2><p>${val(c.expansion)}</p></section>
+        <section class="bro-sec"><h2>Contact</h2>
+          <p>${c.website ? `<a href="${esc(c.website)}" target="_blank" rel="noopener">${esc(c.website)}</a>` : TBC}<br>
+          ${c.email ? `<a href="mailto:${esc(c.email)}">${esc(c.email)}</a>` : ""} ${c.contactPerson ? esc(c.contactPerson) : ""}</p>
+        </section>`;
+  }
+
   function viewCompany(id) {
     const c = CO.find((x) => x.id === id);
     if (!c) return notFound();
@@ -186,20 +210,7 @@
             ${c.tagline ? `<p class="bro-tag">${esc(c.tagline)}</p>` : ""}
           </div>
         </header>
-        <dl class="facts">
-          <div><dt>대표</dt><dd>${val(c.rep)}</dd></div>
-          <div><dt>설립</dt><dd>${val(c.founded)}</dd></div>
-          <div><dt>소재지</dt><dd>${val(c.location)}</dd></div>
-          <div><dt>Pitchstop</dt><dd>10.8 ${c.pitch} SGT</dd></div>
-        </dl>
-        <div class="photo-ph" aria-label="Product / team photo placeholder">Product / team photo</div>
-        <section class="bro-sec"><h2>Core Business</h2><p>${c.core ? esc(c.core) : esc(c.summary)}</p></section>
-        <section class="bro-sec"><h2>Key Achievements</h2>${broBody(c.achievements)}</section>
-        <section class="bro-sec"><h2>Global Expansion Focus</h2>${broBody(c.expansion)}</section>
-        <section class="bro-sec"><h2>Contact</h2>
-          <p>${c.website ? `<a href="${esc(c.website)}" target="_blank" rel="noopener">${esc(c.website)}</a>` : TBC}<br>
-          ${c.email ? `<a href="mailto:${esc(c.email)}">${esc(c.email)}</a>` : ""} ${c.contactPerson ? esc(c.contactPerson) : ""}</p>
-        </section>
+        ${c.pages && c.pages.length ? pagesHTML(c) : legacyHTML(c)}
         ${mine ? `<a class="btn" href="#/my">스타트업 페이지 열기</a>` : ""}
         <nav class="pager">
           ${prev ? `<a href="#/company/${prev.id}"><span>이전</span>${esc(prev.name)}</a>` : "<span></span>"}

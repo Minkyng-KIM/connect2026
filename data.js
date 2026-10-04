@@ -1,6 +1,6 @@
 /* =========================================================
    DATA — 브로슈어(CONNECT_2026_브로슈어_최종_1.pdf) 기준
-   p.21–22 일정 / p.32–43 기업 브로슈어 (CDThera ~ IMITAR)
+   p.21–22 일정 / 기업 브로슈어는 p.28–43 (기업당 2쪽, brochure/ 폴더의 이미지)
    type: ops(운영) · session(세션) · network(네트워킹 피크) · key(CONNECT 핵심)
    ========================================================= */
 window.SCHEDULE = {
@@ -104,14 +104,15 @@ window.SCHEDULE = {
   },
 };
 
-/* 기업 브로슈어 — null 값은 "업데이트 예정"으로 표시됩니다.
-   achievements · expansion 은 문장 하나(string) 또는 항목 목록(array) 모두 가능합니다.
-   관리 시트 A열(로그인 ID)이 id 또는 aliases 중 하나와 같으면 이 기업으로 인식합니다. (대소문자 무관) */
+/* 기업 브로슈어 — pages: 기업 상세 화면에 보여줄 브로슈어 이미지(기업당 2장, 인쇄 쪽 번호 순서).
+   이미지는 brochure/pXX.jpg 로 저장합니다. 관리 시트 A열(로그인 ID)이 id 또는 aliases 중 하나와 같으면
+   이 기업으로 인식합니다. (대소문자 무관) */
 window.COMPANIES = [
   { id: "speechnrt", aliases: ["speech", "speech nrt"], no: 1, pitch: "14:30",
     name: "Speech NRT Co.", legal: "MalGwaHakNoRiTeo Co.", tagline: null,
     summary: "AI-powered personalized speech rehabilitation platform combining speech analysis, pronunciation training, and digital therapeutics.",
     tags: ["Digital Health", "DTx", "AI"],
+    pages: ["brochure/p28.jpg?v=1004", "brochure/p29.jpg?v=1004"],
     rep: null, founded: null, location: null,
     core: null, achievements: null, expansion: null,
     website: null, email: null, contactPerson: null },
@@ -119,116 +120,44 @@ window.COMPANIES = [
     name: "Lifefuturetech", legal: null, tagline: null,
     summary: "AI-powered healthcare platform delivering personalized health monitoring, clinical communication, and end-to-end medical support through Med-LLM technology.",
     tags: ["Digital Health", "Med-LLM"],
+    pages: ["brochure/p30.jpg?v=1004", "brochure/p31.jpg?v=1004"],
     rep: null, founded: null, location: null,
     core: null, achievements: null, expansion: null,
     website: null, email: null, contactPerson: null },
   { id: "cdthera", aliases: ["cd thera"], no: 3, pitch: "14:50",
     name: "CDThera Inc.", legal: null, tagline: "Non-invasive saliva-based AI dementia risk screening",
-    summary: "Early Detection, Better Prevention — a non-invasive oral-saliva multi-biomarker + AI platform (PDX-AD) for early, at-home dementia risk screening and longitudinal brain-health monitoring.",
+    summary: "A non-invasive oral-saliva multi-biomarker + AI platform (PDX-AD) for early, at-home dementia risk screening and longitudinal brain-health monitoring.",
     tags: ["Digital Health", "Saliva Biomarker", "AI Diagnostics"],
-    rep: "Do-Hye Kwon (CEO & Co-Founder)", founded: null, location: "Korea",
-    core: "Early Detection, Better Prevention — a non-invasive oral-saliva multi-biomarker + AI platform (PDX-AD) for early, at-home dementia risk screening and longitudinal brain-health monitoring. The PDX-AD saliva test kit analyzes dementia-related biomarkers (Aβ42/40, p-Tau; Advanced adds BDNF and Calprotectin) and turns them into a personalized 0–100 dementia risk score with monitoring reports, while the AI risk assessment platform classifies risk tiers and forecasts 3–5 year onset risk.",
-    achievements: [
-      "Saliva biomarkers cross-validated against blood (n=127 paired samples; Aβ42/40 R²=0.8104, p-Tau R²=0.8470, p<0.001), enabling repeatable at-home screening years before symptom onset",
-      "AI risk-prediction model: internal AUC 0.882 (n=53 high-risk cohort), externally validated on two independent cohorts (AUC 0.847 and 0.835)",
-      "Lead candidate PDX-AD has reached general-population screening/diagnostic-testing readiness; Basic and Advanced test kits planned for commercial launch in 2026",
-      "Academic and clinical partners include Kinexus Bioinformatics, Johns Hopkins University, Korea Electronics Technology Institute and Seoul National University Hospital",
-    ],
-    expansion: [
-      "Scaling from a Korea-first dementia-screening platform toward a multi-disease ‘Brain & Precision Healthcare’ platform, with Singapore as the priority beachhead for ASEAN expansion",
-      "Channel expansion from direct-to-consumer into hospitals, nursing facilities, health-checkup centers, wellness programs and insurance/corporate-welfare partners",
-      "Platform reuse for cardiovascular disease and hematologic malignancies on the same saliva-sample and AI-engine infrastructure",
-    ],
+    pages: ["brochure/p32.jpg?v=1004", "brochure/p33.jpg?v=1004"],
     website: null, email: null, contactPerson: null },
   { id: "careminder", aliases: [], no: 4, pitch: "15:00",
     name: "CareMinder Co., Ltd.", legal: null, tagline: "Medical voice-AI automating nursing documentation",
-    summary: "CareFlow — a medical voice-recognition AI suite (CareVoice · CareLink · CareForm · CareNote) automating nursing and care documentation.",
+    summary: "CareFlow — a medical voice-recognition AI suite automating nursing and care documentation.",
     tags: ["Medical AI", "Voice AI", "Digital Health"],
-    rep: "Joongu Kang (CEO) · Yujin Lee (CSO)", founded: "Aug 2024", location: "Seoul, Korea",
-    core: "CareFlow — a medical voice-recognition AI suite (CareVoice · CareLink · CareForm · CareNote) automating nursing and care documentation. CareNote auto-charts nurse–patient voice conversations into SOAP/PASS-BAR nursing formats with encrypted transmission and immediate deletion (ISO 27001-based); CareLink lets patients send nursing requests by voice or button from a mobile app or wall-mounted tablet; a multilingual AI engine feeds a real-time per-bed request dashboard that integrates with groupware (Naver Works, Slack, MS Teams).",
-    achievements: [
-      "Best-in-class medical speech accuracy: CER 0.0997 — up to ~4.8x lower error rate than competing medical speech recognition, clinically validated in an IRB-approved study at SNU Bundang Hospital (Apr 2026)",
-      "Demonstrated 39-minute reduction in nurse shift-handover preparation time",
-      "CareLink reduces unnecessary nurse calls by approximately 46%",
-      "8+ hospital network (Samsung Seoul, Korea Univ. Guro, Ajou, etc.); SK Telecom technology-transfer MOU (Oct 2025); selected for KB Financial Group’s KB Starters program (2025) and the Naver D2SF Campus program",
-    ],
-    expansion: [
-      "Global conference presence: MWC Barcelona (Mar 2025), Singapore SWITCH (Oct 2025) and CES Las Vegas (Jan 2026); Hong Kong entity established via HKSTP (Feb 2026)",
-      "Three revenue lines: B2B nursing-hospital subscription through Donggu Bio Pharm’s sales channel, B2B2C family/guardian care reports, and a B2C nurse voice-charting app",
-      "Nursing-influencer and community marketing to build a nurse user base",
-    ],
+    pages: ["brochure/p34.jpg?v=1004", "brochure/p35.jpg?v=1004"],
     website: null, email: null, contactPerson: null },
   { id: "jeongjin", aliases: ["jeongjin bioscience"], no: 5, pitch: "15:10",
     name: "JEONGJIN BIOSCIENCE Co., Ltd.", legal: null, tagline: "Cell-free secretome therapeutics for inflammatory disease",
-    summary: "A cell-free therapeutics company maximizing the potential of cell-derived secretome to develop fundamental treatments and functional ingredients for intractable inflammatory disease.",
+    summary: "A cell-free therapeutics company developing treatments and functional ingredients for intractable inflammatory disease from cell-derived secretome.",
     tags: ["Cell-free Therapeutics", "Secretome", "Inflammatory Disease"],
-    rep: "Chin Hee Mun, Ph.D. (CEO) · Jae Hwan Kim, Ph.D. (CSO)", founded: "Jan 2023", location: "Seoul, Korea",
-    core: "A cell-free therapeutics company maximizing the potential of cell-derived secretome to develop fundamental treatments and functional ingredients for intractable inflammatory disease. iSecretome 2.0 (JJ-11) is a UC-MSC-derived cell-free secretome for ulcerative colitis/IBD that converts inflammatory T-cells and macrophages to anti-inflammatory phenotypes while inducing intestinal epithelial regeneration; oSecretome 1.0 (JJ-31) is an NK-cell secretome-based anticancer candidate for solid tumors, with non-small-cell lung cancer as the priority indication.",
-    achievements: [
-      "Dual-target cell-free platform: over 30% better anti-inflammatory efficacy than non-responders to sulfasalazine and anti-TNF-α antibodies in preclinical models",
-      "JJ-31: 37–49% tumor-weight reduction in preclinical animal models — comparable to or better than standard-of-care paclitaxel — with 80–90% cancer-cell killing in vitro",
-      "JJ-11: non-GLP in-vivo safety and efficacy validated; GLP preclinical studies in progress; KFDA IND submission targeted for Q2 2027",
-      "Cell-free ‘function-only delivery’ avoids structural risks of live-cell administration; lyophilized formulation enables long-term room-temperature/refrigerated storage",
-      "FDA cell and gene therapy reviewer pre-meeting (2024); selected for TIPS and Ministry of Trade, Industry and Energy R&D programs",
-    ],
-    expansion: [
-      "Staged global licensing (license-out) of JJ-11 and JJ-31, targeting big-pharma partners such as Takeda, AbbVie and Janssen",
-      "B2B exclusive supply of a high-value API ingredient (minimum 30L/month) for skin-booster and functional cosmetics, followed by an in-house private-label brand",
-      "Global KOL and institutional networking with UCSF, Stanford, Monash University and CCRM; overseas clinical CRO network including Linkorus (U.S.), Flann (San Francisco Regenerative Association) and Nucleus Network (Australia)",
-    ],
+    pages: ["brochure/p36.jpg?v=1004", "brochure/p37.jpg?v=1004"],
     website: null, email: null, contactPerson: null },
   { id: "beyondmedicine", aliases: ["beyond", "beyond medicine"], no: 6, pitch: "15:20",
     name: "Beyond Medicine", legal: null, tagline: "Prescription Digital Therapeutic for Temporomandibular Disorders",
     summary: "Clickless — a prescription digital therapeutic (DTx/SaMD) delivering a 6-week structured program for temporomandibular disorder (TMD) treatment.",
     tags: ["Digital Health", "DTx / SaMD", "TMD"],
-    rep: "Daehyun Kim, DDS, PhD (CEO & Founder)", founded: null, location: null,
-    core: "Clickless — a prescription digital therapeutic (DTx/SaMD) delivering a 6-week structured program for temporomandibular disorder (TMD) treatment. Clickless (TMD-01) combines guided jaw exercises, oral-behavior awareness and modification, TMD education, relaxation and psychoeducational content, pain/symptom monitoring and data-driven feedback, paired with a clinician dashboard for prescription and remote adherence monitoring.",
-    achievements: [
-      "MFDS Class II SaMD approval in Korea (Dec 2025); initial commercial prescribing launched in 2026",
-      "Published 102-patient multicenter, double-blind, randomized, sham-controlled RCT (JMIR, Oct 2025): greater pain reduction and significant improvements in maximum mouth opening, jaw function and oral behaviors versus sham at 6 weeks",
-      "MFDS Innovative Medical Device designation (No. 82, Dec 2024); selected for TIPS (Dec 2025)",
-      "Top Excellence Award, 2nd Shin Kyuk-ho Lotte Young Entrepreneur Awards (Dec 2025); selected for Korea’s Innovation Premier 1000 (Aug 2026)",
-      "U.S. FDA CDRH acknowledgement received for Pre-Submission (Jul 2026)",
-    ],
-    expansion: [
-      "Singapore as the regional clinical and commercial reference market, followed by selective ASEAN expansion — then the US and Europe as regulatory programs advance",
-      "U.S.: incorporating FDA Pre-Submission feedback toward a marketing submission (510(k) or De Novo) targeted for 2027; EU CE-MDR readiness and Singapore HSA market-entry planning underway",
-      "Working with qualified local distributors and commercialization partners for regulatory support, market access, and hospital and dental-clinic sales; selecting a Singapore regulatory and commercialization partner",
-    ],
+    pages: ["brochure/p38.jpg?v=1004", "brochure/p39.jpg?v=1004"],
     website: null, email: null, contactPerson: null },
   { id: "inexoplat", aliases: [], no: 7, pitch: "15:30",
     name: "INEXOPLAT, Inc.", legal: null, tagline: "Dual-value translational immuno-oncology platform",
-    summary: "A translational immuno-oncology company developing innate immune TME reprogramming therapies for difficult-to-treat solid tumors, with companion-animal clinical development providing both near-term commercial value and a translational bridge to human oncology.",
+    summary: "A translational immuno-oncology company developing innate immune TME reprogramming therapies for difficult-to-treat solid tumors, bridging companion-animal and human oncology.",
     tags: ["Immuno-Oncology", "Veterinary Oncology", "Extracellular Vesicles"],
-    rep: "Sunghwan Kim (CEO) · Jungmin Lee (CSO)", founded: "Mar 2021", location: "Pohang / Incheon, Korea",
-    core: "Dual-Value Translational Immuno-Oncology Platform — a translational immuno-oncology company developing innate immune TME reprogramming therapies for difficult-to-treat solid tumors, with companion-animal clinical development providing both near-term commercial value and a translational bridge to human oncology. IEP-01V is an EV-based innate immune-modulating therapy for dogs and cats with advanced solid tumors; IEP-01 is its human counterpart, with pancreatic cancer as the lead indication. Both share a common innate-immune mechanism and a scalable EV manufacturing platform.",
-    achievements: [
-      "IEP-01 is designed to activate innate immunity through DC/macrophage modulation and reprogram an immunosuppressive ‘cold’ TME toward an immune-active state; multi-tumor preclinical data support development in difficult-to-treat solid tumors",
-      "IEP-01V: preclinical efficacy and preliminary safety package established; prospective canine Phase 1/pilot and immune-biomarker study planned for 2027",
-      "IEP-01: human-relevant translational validation, ex-vivo tumor/immune studies and IND-enabling pharmacology; IND filing / FIH preparation planned for 2028–2029",
-      "Selected for BiiG WAVE, Shinhan Square Bridge Incheon and the TIPS program (2023); 4th Daewoong Group INNOBEAR Open Innovation Program and K-Bio LabHub member company (2025)",
-    ],
-    expansion: [
-      "Dual-track comparative-oncology strategy: veterinary partnering and co-development/licensing with veterinary oncology centers and global Animal Health companies (IEP-01V), then pharma co-development and licensing for human IEP-01",
-      "Prospective companion-animal clinical studies across Korea, Singapore and APAC, building a partner-ready evidence package (veterinary outcomes, safety/immune-biomarker data, CMC readiness)",
-      "Engaging clinician-scientists, translational oncology researchers, veterinary KOLs, Animal Health companies, human oncology partners and investors across Singapore/APAC",
-    ],
+    pages: ["brochure/p40.jpg?v=1004", "brochure/p41.jpg?v=1004"],
     website: null, email: null, contactPerson: null },
   { id: "imitarscience", aliases: ["imitar", "imita", "imita science"], no: 8, pitch: "15:40",
     name: "IMITAR SCIENCE Inc.", legal: null, tagline: "Organ-on-a-chip platform for metabolic disease R&D",
-    summary: "A world without animal testing — a human-like multi-organ-on-a-chip (MSoC) platform resolving the preclinical bottleneck in metabolic-disease drug development.",
+    summary: "A human-like multi-organ-on-a-chip (MSoC) platform resolving the preclinical bottleneck in metabolic-disease drug development — a world without animal testing.",
     tags: ["Organ-on-a-chip", "Non-clinical CRO", "Metabolic Disease"],
-    rep: "Cheolmin Tae, M.D. · Geumgyu Park (Co-CEOs)", founded: "Jul 2021", location: "Incheon, Korea",
-    core: "A world without animal testing — a human-like multi-organ-on-a-chip (MSoC) platform resolving the preclinical bottleneck in metabolic-disease drug development. MSoC (Metabolic System on Chip) is a postage-stamp-sized chip co-culturing organ organoids (gut, liver, kidney, fat, skin) via pump-free microchannels connected by vascular/immune-cell networks to replicate human-like ADME metabolism; up to 2–4 organs can be linked. MSoC Flow™ / Gravity Machine provides automated pump-free fluid flow, and the 3-in-1 automation equipment adds AI-based organoid differentiation, culture and drug-efficacy evaluation.",
-    achievements: [
-      "Korea’s only 2–4 organ metabolic MSoC platform — long-term metabolic connectivity on a single chip, with pump-free fluid flow usable without specialized operating personnel",
-      "Real-use references: a Ministry of Health & Welfare national project (with Toolgen and KIST; obesity/diabetes 4-organ model), a fatty-liver (gut–liver) model supplied to Huons, and MOUs with Ewha Womans University Mokdong Hospital and SNU Bundang Hospital",
-      "Apr 2026: MSoC chip sale to Samyang Foods; May 2024: selected for the startup ‘stepping stone’ R&D program",
-    ],
-    expansion: [
-      "Aims to become the definitive preclinical evaluation platform for advanced biopharmaceuticals (ATMPs) as the industry shifts toward New Approach Methodologies",
-      "CRO services for pharma and hospital researchers (toxicity/metabolic evaluation, custom experiments), plus technology licensing of the MSoC platform to CRO and medical-device companies",
-      "Target linkage to 2028 MFDS approval and the FDA Modernization Act 2.0 pathway",
-    ],
+    pages: ["brochure/p42.jpg?v=1004", "brochure/p43.jpg?v=1004"],
     website: null, email: null, contactPerson: null },
 ];
