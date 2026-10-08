@@ -320,11 +320,13 @@ button.cbtn { font: inherit; font-weight: 700; font-size: 15px; border: 0; curso
 
 /* ===== 1:1 파트너링 미팅 명단 (기업 직접 입력) ===== */
 .roster-note { margin: 0 0 12px; }
-table.resp.roster { min-width: 880px; }
+table.resp.roster { min-width: 1020px; }
 table.roster td { padding: 6px; vertical-align: top; }
-table.roster th:nth-child(1) { width: 14%; } table.roster th:nth-child(2) { width: 20%; }
-table.roster th:nth-child(3) { width: 13%; } table.roster th:nth-child(4) { width: 15%; }
-table.roster th:nth-child(6) { width: 70px; }
+table.roster th:nth-child(1) { width: 12%; } table.roster th:nth-child(2) { width: 17%; }
+table.roster th:nth-child(3) { width: 11%; } table.roster th:nth-child(4) { width: 14%; }
+table.roster th:nth-child(5) { width: 13%; }
+table.roster th:nth-child(7) { width: 70px; }
+table.roster .dt { display: flex; flex-direction: column; gap: 6px; }
 table.roster input, table.roster select, table.roster textarea { width: 100%; box-sizing: border-box; font: inherit; font-size: 13px; font-weight: 400; padding: 8px 9px; border: 1px solid #C2C2BC; border-radius: 6px; background: #fff; }
 table.roster textarea { resize: vertical; min-height: 40px; }
 table.roster input:focus, table.roster select:focus, table.roster textarea:focus { border-color: var(--ink); outline: none; box-shadow: 0 0 0 3px rgba(228,50,27,.2); }
@@ -342,6 +344,7 @@ table.roster .btn { margin: 0; }
   table.roster td { display: block; border: 0; padding: 0; }
   table.roster td::before { content: attr(data-label); display: block; font-size: 12px; font-weight: 600; color: var(--mute); margin-bottom: 4px; }
   table.roster td.del::before { content: none; }
+  table.roster .dt { flex-direction: row; }
 }
 
 /* 기업 브로슈어: 이미지 2장 (모바일 세로 · 넓은 화면 나란히) */

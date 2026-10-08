@@ -5,13 +5,13 @@
  * [확장 프로그램 → Apps Script]로 열어 붙여넣습니다.
  *
  * 관리 시트 첫 번째 탭의 1행(헤더) 순서:
- *   id | name | password | responsesSheet | promoUrl | bookingUrl | formUrl | photoFolder | linkedin | whatsapp | contactPerson | representative
- *   (representative 열이 없으면 기업이 처음 저장할 때 자동으로 추가됩니다)
+ *   id | name | password | responsesSheet | promoUrl | bookingUrl | formUrl | photoFolder | linkedin | whatsapp | contactPerson | representative | contactPerson2
+ *   (representative·contactPerson2·roster 열이 없으면 기업이 처음 저장할 때 자동으로 추가됩니다)
  *
  * 사이트 → 스크립트 요청 (POST, JSON 문자열):
  *   { action: "login",   id, password } → { ok, token, company:{id,name} }
- *   { action: "private", token }        → { ok, data:{ ...링크들, responses:{headers, rows, count} } }
- *   { action: "update",  token, fields:{linkedin, whatsapp, representative, contactPerson} } → { ok, data:{...} }
+ *   { action: "private", token }        → { ok, data:{ ...링크들, roster, responses:{headers, rows, count} } }
+ *   { action: "update",  token, fields:{linkedin, whatsapp, representative, contactPerson, contactPerson2, roster} } → { ok, data:{...} }
  */
 
 const SESSION_HOURS = 6;          // 로그인 유지 시간 (최대 6시간)
@@ -77,6 +77,8 @@ function privateData_(token) {
       whatsapp: row.whatsapp || "",
       representative: row.representative || "",
       contactPerson: row.contactPerson || "",
+      contactPerson2: row.contactPerson2 || "",
+      roster: row.roster || "",
       responses: readResponses_(row.responsesSheet),
     },
   };
@@ -109,7 +111,29 @@ const EDITABLE = {
   linkedin: (v) => v === "" || /^https:\/\/([a-z]{2,3}\.)?(www\.)?linkedin\.com\//i.test(v) ? "" : "LinkedIn 주소는 https://www.linkedin.com/ 으로 시작해야 합니다.",
   whatsapp: (v) => v === "" || /^\d{8,15}$/.test(v) ? "" : "WhatsApp 번호는 국가번호 포함 숫자 8~15자리로 입력하세요. (예: 821012345678)",
   representative: (v) => v.length <= 80 ? "" : "대표는 80자 이내로 입력하세요.",
-  contactPerson: (v) => v.length <= 80 ? "" : "담당자는 80자 이내로 입력하세요.",
+  contactPerson: (v) => v.length <= 80 ? "" : "담당자 1은 80자 이내로 입력하세요.",
+  contactPerson2: (v) => v.length <= 80 ? "" : "담당자 2는 80자 이내로 입력하세요.",
+
+  // 1:1 파트너링 미팅 명단 (이름·소속·직급·미팅일시·미팅장소·미팅 주요내용). 시트의 roster 칸에 글자(JSON)로 저장됩니다.
+  roster: (v) => {
+    if (v === "") return "";
+    if (v.length > 30000) return "미팅 명단이 너무 깁니다.";
+    let a;
+    try { a = JSON.parse(v); } catch (e) { return "미팅 명단 형식이 올바르지 않습니다."; }
+    if (!Array.isArray(a) || a.length > 30) return "미팅 명단은 최대 30명까지 입력할 수 있습니다.";
+    const places = ["", "온라인", "행사장 내 현장 미팅", "오프라인", "기타"];
+    const max = { name: 80, org: 120, title: 80, date: 10, time: 5, place: 30, notes: 500 };
+    for (const r of a) {
+      if (!r || typeof r !== "object" || Array.isArray(r)) return "미팅 명단 형식이 올바르지 않습니다.";
+      for (const k in r) {
+        if (!(k in max) || typeof r[k] !== "string" || r[k].length > max[k]) return "미팅 명단 항목이 올바르지 않습니다.";
+      }
+      if (r.place && places.indexOf(r.place) < 0) return "미팅장소 값이 올바르지 않습니다.";
+      if (r.date && !/^\d{4}-\d{2}-\d{2}$/.test(r.date)) return "미팅 날짜 형식이 올바르지 않습니다.";
+      if (r.time && !/^([01]\d|2[0-3]):[0-5]\d$/.test(r.time)) return "미팅 시간 형식이 올바르지 않습니다.";
+    }
+    return "";
+  },
 };
 
 function updateProfile_(token, fields) {

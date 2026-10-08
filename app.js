@@ -470,13 +470,14 @@
       <td data-label="이름"><input data-f="name" maxlength="80" placeholder="예: John Tan" value="${esc(r.name || "")}"></td>
       <td data-label="소속"><input data-f="org" maxlength="120" placeholder="예: Singapore General Hospital" value="${esc(r.org || "")}"></td>
       <td data-label="직급"><input data-f="title" maxlength="80" placeholder="예: Director" value="${esc(r.title || "")}"></td>
+      <td data-label="미팅일시"><div class="dt"><input type="date" data-f="date" value="${esc(r.date || "")}"><input type="time" data-f="time" value="${esc(r.time || "")}"></div></td>
       <td data-label="미팅장소"><select data-f="place"><option value="">선택</option>${PLACES.map((p) => `<option value="${esc(p)}"${r.place === p ? " selected" : ""}>${esc(p)}</option>`).join("")}</select></td>
       <td data-label="미팅 주요내용"><textarea data-f="notes" maxlength="500" rows="2" placeholder="미팅에서 논의할 내용을 적어주세요">${esc(r.notes || "")}</textarea></td>
       <td class="del"><button class="btn ghost sm" type="button" data-del>삭제</button></td>
     </tr>`;
     const rosterPanel = `
       <p class="note roster-note">미팅이 정해진 파트너를 직접 입력하고 <b>저장</b>을 눌러 주세요. 우리 기업 계정에만 보관됩니다.</p>
-      <div class="tablewrap roster-wrap"><table class="resp roster"><thead><tr><th>이름</th><th>소속</th><th>직급</th><th>미팅장소</th><th>미팅 주요내용</th><th></th></tr></thead>
+      <div class="tablewrap roster-wrap"><table class="resp roster"><thead><tr><th>이름</th><th>소속</th><th>직급</th><th>미팅일시</th><th>미팅장소</th><th>미팅 주요내용</th><th></th></tr></thead>
         <tbody id="rosterBody">${rosterRows.map(rosterRow).join("")}</tbody></table></div>
       <div class="btnrow"><button class="btn ghost sm" type="button" id="addRoster">+ 행 추가</button><button class="btn sm" type="button" id="saveRoster">저장</button><span id="rosterMsg" class="roster-msg" role="status"></span></div>`;
 
